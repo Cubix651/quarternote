@@ -30,6 +30,7 @@ public class MelodyPlayer {
         mainChannel.noteOn(noteNumber, volume);
     }
 
+
     public void noteOff(int noteNumber) {
         mainChannel.noteOff(noteNumber);
     }

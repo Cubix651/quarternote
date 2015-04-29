@@ -4,6 +4,10 @@ public class Note {
     private int midiCode;
     private NoteValue duration;
 
+    public Note(int midiCode) {
+        this.midiCode = midiCode;
+    }
+
     public int getMidiCode() {
         return midiCode;
     }

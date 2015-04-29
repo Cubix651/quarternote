@@ -1,0 +1,44 @@
+File:Music-wholerest.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-halfnote.svg
+By Music-halfnote.png: trivial, author unknown derivative work: Marnanel (Music-halfnote.png) [CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-halfrest.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-quarternote.svg
+By Sherbyte (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-quarterrest.svg
+By Davidkennedy85 (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+File:Music-eighthrest.svg
+By Lucash (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+File:Music-sixteenthnote.svg
+By Music-sixteenthnote.png: User:Denelson83 derivative work: RicHard-59 (Music-sixteenthnote.png) [GFDL (http://www.gnu.org/copyleft/fdl.html), CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-sixteenthrest.svg
+By Lucash (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+File:Music-thirtysecondnote.svg
+By Popadius (Own work) [Public domain], via Wikimedia Commons
+File:Music-thirtysecondrest.svg
+By Lucash (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+File:Music-beam.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-dotnote.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-measurerest.svg
+By Lucash (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+File:Music-flat.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-natural.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-sharp.svg
+By DustyComputer (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-timesig.svg
+By File:Music-timesig.png: Denelson83 Vectorisation: Ekips39 (File:Music-timesig.png) [CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-commontime.svg
+By File:Music-commontime.png: Denelson83 Vectorisation: Ekips39 (File:Music-commontime.png) [CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-cuttime.svg
+By File:Music-cuttime.png: Denelson83 Vectorisation: Ekips39 (File:Music-cuttime.png) [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/)], via Wikimedia Commons
+File:Music-legato.svg
+By File:Music-legato.png: Denelson83 Vectorisation: Cathfolant (File:Music-legato.png) [CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons
+File:Music-triplet.svg
+By Original author: Denelson83 Vectorisation: Ekips39 (File:Music-triplet.png) [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/)], via Wikimedia Commons
+File:Music-crescendo.svg
+By Tomgreep (Own work / File:Music-crescendo.png) [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons

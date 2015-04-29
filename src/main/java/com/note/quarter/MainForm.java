@@ -7,11 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainForm extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+
         primaryStage.setTitle("QuarterNote");
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root, 1100, 800);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }

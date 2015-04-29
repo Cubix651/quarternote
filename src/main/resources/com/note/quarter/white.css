@@ -1,0 +1,13 @@
+.button{
+    -fx-background-color:
+       linear-gradient(to right,ivory 0%, ivory 100%);
+    -fx-border-color: gray;
+    -fx-border-radius: 1;
+}
+.button:pressed{
+      -fx-background-color:
+           linear-gradient(to right, #7CB9E8 0%, #007FFF 100%);
+        -fx-border-color: gray;
+        -fx-border-radius: 1;
+
+}
