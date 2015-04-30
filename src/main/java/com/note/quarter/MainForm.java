@@ -13,7 +13,7 @@ public class MainForm extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
 
         primaryStage.setTitle("QuarterNote");
-        Scene scene = new Scene(root, 1100, 800);
+        Scene scene = new Scene(root, 1100, 600);
 
         primaryStage.setScene(scene);
         primaryStage.show();

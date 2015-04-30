@@ -5,7 +5,7 @@ public enum NoteValue {
     HALF(0.5),
     QUARTER(0.25),
     EIGHTH(0.125),
-    SIZTEENTH(0.0625);
+    SIXTEENTH(0.0625);
 
     private double relativeDuration;
 

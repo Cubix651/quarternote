@@ -1,0 +1,25 @@
+.pressedKey{
+    -fx-background-color: linear-gradient(to right, #7CB9E8 0%, #007FFF 100%);
+    -fx-border-color: gray;
+}
+
+.whiteKey{
+    -fx-background-color: linear-gradient(to right,ivory 0%, ivory 100%);
+    -fx-border-color: gray;
+    -fx-border-radius: 1;
+}
+
+.whiteKeyPressed{
+    -fx-background-color: linear-gradient(to right, #7CB9E8 0%, #007FFF 100%);
+    -fx-border-color: gray;
+    -fx-border-radius: 1;
+}
+
+.blackKey{
+    -fx-background-color: linear-gradient(to right,black 0%, #232723 33%, #373837 66%, black 100%);
+}
+
+.blackKeyPressed{
+    -fx-background-color: linear-gradient(to right, #7CB9E8 0%, #007FFF 100%);
+    -fx-border-color: gray;
+}

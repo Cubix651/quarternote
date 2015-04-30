@@ -1,9 +1,12 @@
 package com.note.quarter;
 
-import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import javax.sound.midi.MidiUnavailableException;
 import java.net.URL;
@@ -13,43 +16,72 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    // @FXML
-    //  Button C4;
-
+    @FXML
+    private Pane pianoPane;
+    private Map<Integer, Button> pianoKeys = new HashMap<>();
     private MelodyPlayer melodyPlayer;
 
-    private Map<String, Integer> map = new HashMap<String, Integer>();
-    String seq = "q2w3er5t6y7uzsxdcvgbhnjm";
+    private Map<String, Integer> keyboardMapping = new HashMap<>();
+    String keyboardMapingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
-        for (int i = 0; i < seq.length(); ++i) {
-            map.put(seq.charAt(i) + "", 60 + i);
+        for (int i = 0; i < keyboardMapingSequence.length(); ++i) {
+            keyboardMapping.put(keyboardMapingSequence.charAt(i) + "", 60 + i);
         }
-
 
         try {
             melodyPlayer = new MelodyPlayer();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
-   /*  C4.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                melodyPlayer.noteOn((map.get(event.getText())));
+
+        for(Node node : pianoPane.getChildren()) {
+            if (node.getId() != null && node.getId().startsWith("key")) {
+                pianoKeys.put(Integer.parseInt(node.getId().substring(3)), (Button) node);
             }
-        });*/
+        }
     }
 
-    public void KeyWhiteOrBlackPressedHandle(KeyEvent event) {
-        melodyPlayer.noteOn((map.get(event.getText())));
+    private void pressPianoKey(int noteNumber) {
+        if (!melodyPlayer.isNoteOn(noteNumber)) {
+            melodyPlayer.noteOn(noteNumber);
+            Button button = pianoKeys.get(noteNumber);
+            button.getStyleClass().replaceAll(s -> s + "Pressed");
+        }
     }
 
-    public void KeyWhiteOrBlackClickedHandle(Event event) {
+    private void releasePianoKey(int noteNumber) {
+        if (melodyPlayer.isNoteOn(noteNumber)) {
+            melodyPlayer.noteOff(noteNumber);
+            Button button = pianoKeys.get(noteNumber);
+            button.getStyleClass().replaceAll(s -> s.substring(0, s.length() - "Pressed".length()));
+        }
+    }
 
-        melodyPlayer.noteOn(map.get(((Button) event.getSource()).getText()));
+    public void keyPressedHandler(KeyEvent event) {
+        String key = event.getText();
+        if(keyboardMapping.containsKey(key)) {
+            pressPianoKey(keyboardMapping.get(key));
+        }
+    }
+
+    public void keyReleasedHandler(KeyEvent event) {
+        String key = event.getText();
+        if(keyboardMapping.containsKey(key)) {
+            releasePianoKey(keyboardMapping.get(key));
+        }
+    }
+
+    public void pianoMousePressedHandler(MouseEvent event) {
+        int noteNumber = Integer.parseInt(((Button) event.getSource()).getId().substring(3));
+        pressPianoKey(noteNumber);
+    }
+
+    public void pianoMouseReleasedHandler(MouseEvent event) {
+        int noteNumber = Integer.parseInt(((Button) event.getSource()).getId().substring(3));
+        releasePianoKey(noteNumber);
     }
 }
