@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="200"
+   height="200"
+   id="svg2"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Music-quarternote.svg">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="1.18"
+     inkscape:cx="100"
+     inkscape:cy="100"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4" />
+  <path
+     inkscape:connector-curvature="0"
+     style="font-size:317.82015991px;font-style:normal;font-weight:normal;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Bitstream Vera Sans"
+     d="m 93.121349,101.33135 0,48.52065 c -3e-6,1e-5 -3e-6,3.27065 0,9.81188 4.817789,-4.19048 10.224421,-6.33682 16.219911,-6.43907 3.74716,5e-5 6.95902,1.48205 9.6356,4.44601 2.35534,2.75961 3.58654,5.82583 3.69364,9.19865 0.10699,2.65739 -0.58887,5.72359 -2.08771,9.19863 -0.53534,1.4309 -1.71302,2.96401 -3.53305,4.59931 -1.39183,1.22649 -2.83717,2.50407 -4.33602,3.83277 -7.92261,5.51916 -15.845203,11.08943 -23.767794,16.71084 l 0,-99.87967 4.175423,0 M 106.1294,163.0367 c -1.28476,-1.43088 -2.94422,-2.14633 -4.97839,-2.14633 -2.569501,0 -4.65721,1.37979 -6.263135,4.13937 -1.177688,2.14635 -1.766529,7.20559 -1.766526,15.17775 l 0,13.1847 c 0.107061,0.4088 3.104795,-2.09525 8.993221,-7.51222 3.21185,-2.86179 5.29956,-6.23464 6.26314,-10.11849 0.42822,-1.53312 0.64235,-3.0662 0.64237,-4.59932 -2e-5,-3.37284 -0.96358,-6.08131 -2.89068,-8.12546"
+     id="text1412"
+     sodipodi:nodetypes="cccccccccccccscsccccc" />
+</svg>
