@@ -28,6 +28,7 @@ public class MusicSheet {
     private double width;
     public double wholeXGap = 180 + 2;   //to do : change with constructor - deafult =180 - gap for whole note
     public double currentStaffPosition = 100;
+    public final double MIN_CURRENT_STAFF_POSITION = STAFF_GAP+STAFF_HEIGHT;
     public final double MIN_CURRENT_X_POSITION = 60;
     public final double MAX_CURRENT_X_POSITION = 850; //width
     public double currentXPosition = MIN_CURRENT_X_POSITION;
@@ -169,24 +170,47 @@ public class MusicSheet {
                             canvasPane.getChildren().add(imageView);
                             currentXPosition = currentXPosition + wholeXGap * noteValue.getRelativeDuration();
                             currentRelativeXPosition+=defaultXGap;
-                        }else if(noteCharacter.equals(NoteCharacter.REST))
-                        {
-                            double positionY = currentStaffPosition;
-                            ImageView imageView = new ImageView(image);
-                            imageView.setX(currentXPosition);
-                            imageView.setY(positionY);
-                            canvasPane.getChildren().add(imageView);
-                            currentXPosition = currentXPosition + wholeXGap * noteValue.getRelativeDuration();
-                            currentRelativeXPosition+=defaultXGap;
                         }
                     });
                     getItems().add(item);
                 }
             }
         }
-        PopupMenu popupMenu = new PopupMenu();
-        System.out.println(button.getLayoutX()+ " " +button.getLayoutY());
-        popupMenu.show(button, x, y);
+        if(noteCharacter.equals(NoteCharacter.REST))
+        {
+            double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
+            if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap>MAX_CURRENT_X_POSITION )
+            {
+                if(currentRelativeXPosition!=wholeXGap) return;
+                ImageView barImage = new ImageView(bar);
+                barImage.setLayoutX(currentXPosition);
+                barImage.setLayoutY(currentStaffPosition);
+                canvasPane.getChildren().add(barImage);
+                currentXPosition = currentXPosition + barGap;
+                if(currentRelativeXPosition+barGap>wholeXGap)
+                    currentRelativeXPosition = 0;
+                if(currentXPosition+barGap>MAX_CURRENT_X_POSITION)
+                {
+                    currentXPosition = MIN_CURRENT_X_POSITION;
+                    currentStaffPosition = currentStaffPosition+STAFF_HEIGHT+STAFF_GAP;
+                    if(currentStaffPosition>length) return;
+                }
+
+            }
+
+
+            double positionY = currentStaffPosition;
+            ImageView imageView = new ImageView(image);
+            imageView.setX(currentXPosition);
+            imageView.setY(positionY);
+            canvasPane.getChildren().add(imageView);
+            currentXPosition = currentXPosition + wholeXGap * noteValue.getRelativeDuration();
+            currentRelativeXPosition+=wholeXGap*noteValue.getRelativeDuration();
+        }
+        else {
+            PopupMenu popupMenu = new PopupMenu();
+            popupMenu.show(button, x, y);
+        }
     }
 
     public void setValidNote(Image image, double positionY, NoteValue noteValue, NoteCharacter noteCharacter)
@@ -246,9 +270,9 @@ public class MusicSheet {
         double y;
         try {
             if(noteCharacter.equals(NoteCharacter.DOWN))
-                y = getValidYPosition(positionY,true);
+                y = getValidYSignPosition(positionY, true);
             else if(noteCharacter.equals(NoteCharacter.UP)) {
-                y = getValidYPosition(positionY, false);
+                y = getValidYSignPosition(positionY, false);
             }
             else return;
         } catch (IllegalNotePosition illegalNotePosition) {
@@ -260,6 +284,34 @@ public class MusicSheet {
         canvasPane.getChildren().add(imageView);
 
     }
+
+    public double getValidYSignPosition(double positionY, boolean Down ) throws IllegalNotePosition
+    {
+        if(Down)
+        {
+            for(double d = MIN_CURRENT_STAFF_POSITION; d<=currentStaffPosition; d+=STAFF_GAP+STAFF_HEIGHT) {
+                for (Double defPos : defaultYDownPositions.values()) {
+                    if(d+defPos-INPUT_LINE_BOUND<=positionY && d+defPos+INPUT_LINE_BOUND>=positionY) {
+
+                        return d + defPos -STAFF_HEIGHT/2;
+                    }
+                }
+            }
+        }
+        else
+        {
+            for(double d = MIN_CURRENT_STAFF_POSITION; d<=currentStaffPosition; d+=STAFF_GAP+STAFF_HEIGHT) {
+                for (Double defPos : defaultYUpPositions.values()) {
+                    if(d+defPos-INPUT_LINE_BOUND<=positionY && d+defPos+INPUT_LINE_BOUND>=positionY) {
+
+                        return d + defPos -STAFF_HEIGHT/2;
+                    }
+                }
+            }
+        }
+        throw new IllegalNotePosition();
+    }
+
 
     public double getValidYPosition(double positionY, boolean Down) throws IllegalNotePosition
     {

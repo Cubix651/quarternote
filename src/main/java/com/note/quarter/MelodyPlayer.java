@@ -13,7 +13,7 @@ public class MelodyPlayer {
     private Synthesizer synthesizer;
     private MidiChannel mainChannel;
     final private int mainChannelNumber = 0;
-    private Set<Integer> notesOn = new HashSet<>();
+    private Set<Integer> notesOn = new HashSet<Integer>();
 
     public int getVolume() {
         return volume;

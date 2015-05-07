@@ -153,7 +153,14 @@ public class MainController implements Initializable {
     }
 
     public void setUpNewProject(Event event) throws IOException {
-      /*set up New Project code */
+
+        if(canvasPane.getChildren().size()>1)
+            {
+                canvasPane.getChildren().remove(1,canvasPane.getChildren().size());
+            }
+
+        File file  = new File("src/main/resources/com/note/quarter/images/Music-staff-small.png");
+        musicSheet = new MusicSheet(canvas,canvasPane,file.toURI().toString());
     }
 
     public void NoteClicked(MouseEvent event)
