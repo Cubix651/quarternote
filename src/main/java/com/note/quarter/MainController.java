@@ -11,7 +11,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 
 import javax.sound.midi.MidiUnavailableException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -20,30 +19,25 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private Pane pianoPane;
-    @FXML
-    private Canvas canvas;
-    @FXML
-    private Pane canvasPane;
+    @FXML private Pane pianoPane;
+    @FXML private Canvas canvas;
+    @FXML private Pane canvasPane;
 
     private MusicSheet musicSheet;
     private Map<Integer, Button> pianoKeys = new HashMap<>();
     private MelodyPlayer melodyPlayer;
 
     private Map<String, Integer> keyboardMapping = new HashMap<>();
-    String keyboardMapingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
+    String keyboardMappingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        for (int i = 0; i < keyboardMapingSequence.length(); ++i) {
-            keyboardMapping.put(keyboardMapingSequence.charAt(i) + "", 60 + i);
+        for (int i = 0; i < keyboardMappingSequence.length(); ++i) {
+            keyboardMapping.put(keyboardMappingSequence.charAt(i) + "", 60 + i);
         }
 
-        File file  = new File("src/main/resources/com/note/quarter/images/Music-staff-small.png");
-
-        musicSheet = new MusicSheet(canvas,canvasPane,file.toURI().toString());
+        musicSheet = new MusicSheet(canvas, canvasPane);
 
         try {
             melodyPlayer = new MelodyPlayer();
@@ -51,7 +45,7 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
 
-        for(Node node : pianoPane.getChildren()) {
+        for (Node node : pianoPane.getChildren()) {
             if (node.getId() != null && node.getId().startsWith("key")) {
                 pianoKeys.put(Integer.parseInt(node.getId().substring(3)), (Button) node);
             }
@@ -76,14 +70,14 @@ public class MainController implements Initializable {
 
     public void keyPressedHandler(KeyEvent event) {
         String key = event.getText();
-        if(keyboardMapping.containsKey(key)) {
+        if (keyboardMapping.containsKey(key)) {
             pressPianoKey(keyboardMapping.get(key));
         }
     }
 
     public void keyReleasedHandler(KeyEvent event) {
         String key = event.getText();
-        if(keyboardMapping.containsKey(key)) {
+        if (keyboardMapping.containsKey(key)) {
             releasePianoKey(keyboardMapping.get(key));
         }
     }
@@ -99,7 +93,7 @@ public class MainController implements Initializable {
     }
 
     public void setNoteDragDetected(Event event) {
-        Button source = (Button)event.getSource();
+        Button source = (Button) event.getSource();
         ImageView view = (javafx.scene.image.ImageView) source.getGraphic();
 
         Dragboard dragboard = source.startDragAndDrop(TransferMode.COPY);
@@ -112,22 +106,20 @@ public class MainController implements Initializable {
     }
 
     public void setNoteDragOver(DragEvent event) {
-        if(event.getGestureSource()!=event.getSource() && event.getDragboard().hasImage())
-        {
-           event.acceptTransferModes(TransferMode.COPY);
+        if (event.getGestureSource() != event.getSource() && event.getDragboard().hasImage()) {
+            event.acceptTransferModes(TransferMode.COPY);
         }
         event.consume();
     }
 
     public void setNoteDragDroped(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
-        boolean isSuccesful=false;
+        boolean isSuccesful = false;
 
-        if(dragboard.hasImage() && dragboard.hasString())
-        {
-            String [] info = dragboard.getString().split("_");
-            if(info.length==3) {
-                if(info[0].equals("NOTE")) {
+        if (dragboard.hasImage() && dragboard.hasString()) {
+            String[] info = dragboard.getString().split("_");
+            if (info.length == 3) {
+                if (info[0].equals("NOTE")) {
                     NoteValue v = NoteValue.valueOf(info[1]); //50x50 default image size;
                     NoteCharacter c = NoteCharacter.valueOf(info[2]);
                     double y = event.getY();
@@ -135,13 +127,11 @@ public class MainController implements Initializable {
                     musicSheet.setValidNote(dragboard.getImage(), y, v, c);
 
                     isSuccesful = true;
-                }
-                else if(info[0].equals("SIGN"))
-                {
+                } else if (info[0].equals("SIGN")) {
                     NoteCharacter c = NoteCharacter.valueOf(info[1]);
                     double y = event.getY();
                     double x = event.getX();
-                    musicSheet.setValidSign(dragboard.getImage(),y,x,c);
+                    musicSheet.setValidSign(dragboard.getImage(), y, x, c);
                     isSuccesful = true;
                 }
             }
@@ -153,25 +143,19 @@ public class MainController implements Initializable {
     }
 
     public void setUpNewProject(Event event) throws IOException {
-
-        if(canvasPane.getChildren().size()>1)
-            {
-                canvasPane.getChildren().remove(1,canvasPane.getChildren().size());
-            }
-
-        File file  = new File("src/main/resources/com/note/quarter/images/Music-staff-small.png");
-        musicSheet = new MusicSheet(canvas,canvasPane,file.toURI().toString());
+        if (canvasPane.getChildren().size() > 1) {
+            canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
+        }
+        musicSheet = new MusicSheet(canvas, canvasPane);
     }
 
-    public void NoteClicked(MouseEvent event)
-    {
-
-        Button source = (Button)event.getSource();
+    public void NoteClicked(MouseEvent event) {
+        Button source = (Button) event.getSource();
         double x = event.getScreenX();
         double y = event.getScreenY();
-        String [] info = source.getId().split("_");
-        if(info.length==3) {
-            if(info[0].equals("NOTE")) {
+        String[] info = source.getId().split("_");
+        if (info.length == 3) {
+            if (info[0].equals("NOTE")) {
                 NoteValue v = NoteValue.valueOf(info[1]);
                 NoteCharacter c = NoteCharacter.valueOf(info[2]);
                 ImageView imageView = (ImageView) source.getChildrenUnmodifiable().get(0);
@@ -179,9 +163,6 @@ public class MainController implements Initializable {
             }
 
         }
-
         event.consume();
     }
-
-
 }

@@ -8,13 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
 
 public class MusicSheet {
-
 
     private final double barGap = 20;
     private double length;
@@ -35,15 +33,14 @@ public class MusicSheet {
     private Canvas canvas;
     private Pane canvasPane;
 
-    public MusicSheet(Canvas canvas, Pane canvasPane, String staffImageURL)
+    public MusicSheet(Canvas canvas, Pane canvasPane)
     {
+        String staffPath = getClass().getResource("images/Music-staff-small.png").toString();
+        String clefPath = getClass().getResource("images/Music-GClef.png").toString();
+        String barPath = getClass().getResource("images/bar.png").toString();
+        String meterPath = getClass().getResource("images/commontime.png").toString();
 
-        //MusicStaff.class.getResource("src/main/resources/")
-        File clef  = new File("src/main/resources/com/note/quarter/images/Music-GClef.png");
-        File barr = new File("src/main/resources/com/note/quarter/images/bar.png");
-        File meter = new File("src/main/resources/com/note/quarter/images/commontime.png");
-
-        musicStaff = new MusicStaff(new Image(staffImageURL),new Image(clef.toURI().toString()),new Image(meter.toURI().toString()));
+        musicStaff = new MusicStaff(new Image(staffPath),new Image(clefPath),new Image(meterPath));
 
         length  = canvas.getHeight();
         width = canvas.getWidth();
@@ -51,7 +48,7 @@ public class MusicSheet {
         MIN_CURRENT_STAFF_POSITION = musicStaff.STAFF_HEIGHT+musicStaff.STAFF_GAP;
         currentStaffPosition = MIN_CURRENT_STAFF_POSITION;
 
-        this.bar = new Image(barr.toURI().toString());
+        this.bar = new Image(barPath);
 
         LINES_COUNT = musicStaff.drawStaff(canvas,length,width,8);
         this.canvas = canvas;
