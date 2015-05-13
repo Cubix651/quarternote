@@ -1,11 +1,11 @@
 package com.note.quarter;
 
-public class Note {
+public class Note extends NoteRest {
     private int midiCode;
-    private NoteValue duration;
 
-    public Note(int midiCode) {
+    public Note(NoteRestValue value, int midiCode) {
         this.midiCode = midiCode;
+        setValue(value);
     }
 
     public int getMidiCode() {
@@ -16,11 +16,8 @@ public class Note {
         this.midiCode = midiCode;
     }
 
-    public NoteValue getDuration() {
-        return duration;
-    }
-
-    public void setDuration(NoteValue duration) {
-        this.duration = duration;
+    @Override
+    public boolean isNote() {
+        return true;
     }
 }

@@ -13,10 +13,10 @@ import java.util.TreeMap;
 
 
 public class MusicSheet {
-
     private final double barGap = 20;
     private double length;
     private double width;
+
     public double wholeXGap = 180 + 2;   //to do : change with constructor - deafult =180 - gap for whole note
     public double currentStaffPosition ;
     public final double MIN_CURRENT_STAFF_POSITION;
@@ -115,7 +115,7 @@ public class MusicSheet {
 
 
 
-    public void setNote(Image image,NoteValue noteValue, NoteCharacter noteCharacter, Button button, double x, double y)
+    public void setNote(Image image,NoteRestValue noteRestValue, NoteCharacter noteCharacter, Button button, double x, double y)
     {
 
         class PopupMenu extends ContextMenu{
@@ -127,7 +127,7 @@ public class MusicSheet {
                     item.setOnAction(event -> {
 
 
-                        double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
+                        double defaultXGap = wholeXGap* noteRestValue.getRelativeValue();
                         int positionNumber = nameToDefaultInt.get(item.getText());
                         if(!checkAndUpdateMeter(defaultXGap)) return;
 
@@ -153,7 +153,7 @@ public class MusicSheet {
         }
         if(noteCharacter.equals(NoteCharacter.REST))
         {
-            double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
+            double defaultXGap = wholeXGap* noteRestValue.getRelativeValue();
             if(!checkAndUpdateMeter(defaultXGap)) return;
             double positionY = currentStaffPosition;
             ImageView imageView = new ImageView(image);
@@ -169,10 +169,10 @@ public class MusicSheet {
         }
     }
 
-    public void setValidNote(Image image, double positionY, NoteValue noteValue, NoteCharacter noteCharacter)
+    public void setValidNote(Image image, double positionY, NoteRestValue noteRestValue, NoteCharacter noteCharacter)
     {
         ImageView imageView = new ImageView(image);
-        double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
+        double defaultXGap = wholeXGap* noteRestValue.getRelativeValue();
 
         if(!checkAndUpdateMeter(defaultXGap)) return;
 

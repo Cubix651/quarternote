@@ -120,7 +120,7 @@ public class MainController implements Initializable {
             String[] info = dragboard.getString().split("_");
             if (info.length == 3) {
                 if (info[0].equals("NOTE")) {
-                    NoteValue v = NoteValue.valueOf(info[1]); //50x50 default image size;
+                    NoteRestValue v = NoteRestValue.valueOf(info[1]); //50x50 default image size;
                     NoteCharacter c = NoteCharacter.valueOf(info[2]);
                     double y = event.getY();
 
@@ -156,7 +156,7 @@ public class MainController implements Initializable {
         String[] info = source.getId().split("_");
         if (info.length == 3) {
             if (info[0].equals("NOTE")) {
-                NoteValue v = NoteValue.valueOf(info[1]);
+                NoteRestValue v = NoteRestValue.valueOf(info[1]);
                 NoteCharacter c = NoteCharacter.valueOf(info[2]);
                 ImageView imageView = (ImageView) source.getChildrenUnmodifiable().get(0);
                 musicSheet.setNote(imageView.getImage(), v, c, source, x, y);
