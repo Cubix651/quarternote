@@ -4,8 +4,7 @@ public enum NoteRestValue {
     WHOLE(1),
     HALF(0.5),
     QUARTER(0.25),
-    EIGHTH(0.125),
-    SIXTEENTH(0.0625);
+    EIGHTH(0.125);
 
     private double relativeValue;
 
