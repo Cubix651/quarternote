@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -33,10 +35,12 @@ public class MusicSheet {
     private Canvas canvas;
     private Pane canvasPane;
 
+    private List<NoteRest> noteRestList = new LinkedList<>();
+
     public MusicSheet(Canvas canvas, Pane canvasPane)
     {
-        String staffPath = getClass().getResource("images/Music-staff-small.png").toString();
-        String clefPath = getClass().getResource("images/Music-GClef.png").toString();
+        String staffPath = getClass().getResource("images/staff.png").toString();
+        String clefPath = getClass().getResource("images/gclef.png").toString();
         String barPath = getClass().getResource("images/bar.png").toString();
         String meterPath = getClass().getResource("images/commontime.png").toString();
 

@@ -53,47 +53,47 @@
                     </rowConstraints>
                     <children>
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" GridPane.columnIndex="1" GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="4"/>
-                        <Button fx:id="NOTE_QUARTER_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0">
+                        <Button fx:id="NOTE_QUARTER_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/quarternote-small.png" />
+                              <Image url="@images/notes/up/quarter.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                        <Button fx:id="NOTE_EIGHTH_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="1">
+                        <Button fx:id="NOTE_EIGHTH_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="1">
                             <graphic>
                             <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
-                                    <Image url="@images/eighnote.png" />
+                                    <Image url="@images/notes/up/eighth.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                         </Button>
-                        <Button fx:id="NOTE_HALF_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
+                        <Button fx:id="NOTE_HALF_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@images/halfnote.png" />
+                                        <Image url="@images/notes/up/half.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="NOTE_QUARTER_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" onMouseClicked="#NoteClicked"  prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button fx:id="NOTE_QUARTER_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" onMouseClicked="#NoteClicked"  prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@images/quarternote-small-up.png" />
+                                        <Image url="@images/notes/down/quarter.png" />
                                     </image>
                                 </ImageView>
                      </graphic>
                         </Button>
 
-                        <Button fx:id="NOTE_EIGHTH_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked"  GridPane.rowIndex="2">
+                        <Button fx:id="NOTE_EIGHTH_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked"  GridPane.rowIndex="2">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/eighnote-up.png" />
+                              <Image url="@images/notes/down/eighth.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -101,24 +101,24 @@
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/whole.png" />
+                              <Image url="@images/rests/whole.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                        <Button fx:id="NOTE_WHOLE_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2">
+                        <Button fx:id="NOTE_WHOLE_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2">
                         <graphic>
                             <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
-                                    <Image url="@images/wholenote.png" />
+                                    <Image url="@images/notes/up/whole.png" />
                                 </image>
                             </ImageView>
                         </graphic></Button>
 
-                        <Button fx:id="NOTE_HALF_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button fx:id="NOTE_HALF_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/halfnote-up.png" />
+                              <Image url="@images/notes/down/half.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -127,7 +127,7 @@
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/quarterrest.png" />
+                              <Image url="@images/rests/quarter.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -136,23 +136,23 @@
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/half.png" />
+                              <Image url="@images/rests/half.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                        <Button fx:id="SIGN_DOWN_SHARP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected"  GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <Button fx:id="SIGN_UP_SHARP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected"  GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@images/sharp.png" />
+                                        <Image url="@images/signs/sharp.png" />
                                     </image>
                                 </ImageView>
                      </graphic></Button>
-                        <Button fx:id="SIGN_DOWN_FLAT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="4">
+                        <Button fx:id="SIGN_UP_FLAT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="4">
                      <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@images/blfat.png" />
+                                        <Image url="@images/signs/flat.png" />
                                     </image>
                                 </ImageView>
                      </graphic></Button>
@@ -172,7 +172,7 @@
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  >
                            <image>
-                              <Image url="@images/eighthrest.png" />
+                              <Image url="@images/rests/eighth.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
