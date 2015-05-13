@@ -9,82 +9,55 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 
 public class MusicSheet {
 
-    public final double CLEF_POSITION = 0;
-    public final double TIME_POSITION = 20;
+
     private final double barGap = 20;
-    public final double STAFF_GAP = 50;
-    public final double STAFF_HEIGHT = 50;
-    public final double REAL_LINE_GAP=12.5;
-    public final double LINE_GAP = REAL_LINE_GAP/2;
-    public final double INPUT_LINE_BOUND = LINE_GAP/2;
     private double length;
     private double width;
     public double wholeXGap = 180 + 2;   //to do : change with constructor - deafult =180 - gap for whole note
-    public double currentStaffPosition = 100;
-    public final double MIN_CURRENT_STAFF_POSITION = STAFF_GAP+STAFF_HEIGHT;
+    public double currentStaffPosition ;
+    public final double MIN_CURRENT_STAFF_POSITION;
     public final double MIN_CURRENT_X_POSITION = 60;
     public final double MAX_CURRENT_X_POSITION = 850; //width
     public double currentXPosition = MIN_CURRENT_X_POSITION;
     public double currentRelativeXPosition = 0;
-   // public final int KEY_COUNT = 14;
     public final int LINES_COUNT;
 
-
-    private Map<Integer,Double> defaultYDownPositions = new HashMap<>();
-    private Map<Integer,Double> defaultYUpPositions = new HashMap<>();
     private Map<String,Integer> nameToDefaultInt = new TreeMap<>();
 
-    private Image staff;
     private Image bar;
+    private MusicStaff musicStaff;
     private Canvas canvas;
     private Pane canvasPane;
 
-    public MusicSheet(Canvas canvas, Pane canvasPane, String imageURL)
+    public MusicSheet(Canvas canvas, Pane canvasPane, String staffImageURL)
     {
+
+        //MusicStaff.class.getResource("src/main/resources/")
+        File clef  = new File("src/main/resources/com/note/quarter/images/Music-GClef.png");
+        File barr = new File("src/main/resources/com/note/quarter/images/bar.png");
+        File meter = new File("src/main/resources/com/note/quarter/images/commontime.png");
+
+        musicStaff = new MusicStaff(new Image(staffImageURL),new Image(clef.toURI().toString()),new Image(meter.toURI().toString()));
+
         length  = canvas.getHeight();
         width = canvas.getWidth();
-        staff = new Image(imageURL);
 
-        double y = currentStaffPosition;
-        int counter = 0;
-
-        File file  = new File("src/main/resources/com/note/quarter/images/Music-GClef.png");
-        File barr = new File("src/main/resources/com/note/quarter/images/bar.png");
-        File time = new File("src/main/resources/com/note/quarter/images/commontime.png");
+        MIN_CURRENT_STAFF_POSITION = musicStaff.STAFF_HEIGHT+musicStaff.STAFF_GAP;
+        currentStaffPosition = MIN_CURRENT_STAFF_POSITION;
 
         this.bar = new Image(barr.toURI().toString());
 
-        while(y+STAFF_HEIGHT+STAFF_GAP<length)
-        {
-            canvas.getGraphicsContext2D().drawImage(staff,0,y,width,STAFF_HEIGHT);
-            canvas.getGraphicsContext2D().drawImage(new Image(file.toURI().toString()),CLEF_POSITION,y-25);
-            canvas.getGraphicsContext2D().drawImage(new Image(time.toURI().toString()),8,y-25);
-            y = y+STAFF_GAP+STAFF_HEIGHT;
-            counter++;
-        }
-        LINES_COUNT = counter;
-
+        LINES_COUNT = musicStaff.drawStaff(canvas,length,width,8);
         this.canvas = canvas;
         this.canvasPane = canvasPane;
 
-        double k = STAFF_HEIGHT/2 + REAL_LINE_GAP + LINE_GAP;
-
-
-        for(int i=60;i<74;i++)
-        {
-            defaultYDownPositions.put(i,k);
-            defaultYUpPositions.put(i,k+STAFF_HEIGHT/2+REAL_LINE_GAP);
-            k=k-LINE_GAP;
-
-        }
-        int j = 60;
+        int j = 0;
         for(int i=67;i<72;i++)
         {
             String s = new String(Character.toChars(i));
@@ -118,6 +91,33 @@ public class MusicSheet {
         nameToDefaultInt.put(s,j);
     }
 
+    private boolean checkAndUpdateMeter(double defaultXGap)
+    {
+
+        if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap>MAX_CURRENT_X_POSITION )
+        {
+            if(currentRelativeXPosition!=wholeXGap) return false;  //it illegal to insert a note;
+            ImageView barImage = new ImageView(bar); //add bar
+            barImage.setLayoutX(currentXPosition);
+            barImage.setLayoutY(currentStaffPosition);
+            canvasPane.getChildren().add(barImage);
+            currentXPosition = currentXPosition + barGap;
+
+            if(currentRelativeXPosition+barGap>wholeXGap)
+                currentRelativeXPosition = 0;
+            if(currentXPosition+barGap>MAX_CURRENT_X_POSITION)
+            {
+                currentXPosition = MIN_CURRENT_X_POSITION;
+                currentStaffPosition = currentStaffPosition+musicStaff.STAFF_HEIGHT+musicStaff.STAFF_GAP;
+                if(currentStaffPosition>length) return false; //no more place to insert
+            }
+
+        }
+        return true;
+    }
+
+
+
     public void setNote(Image image,NoteValue noteValue, NoteCharacter noteCharacter, Button button, double x, double y)
     {
 
@@ -131,46 +131,24 @@ public class MusicSheet {
 
 
                         double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
+                        int positionNumber = nameToDefaultInt.get(item.getText());
+                        if(!checkAndUpdateMeter(defaultXGap)) return;
 
+                        double y;
+                        if(noteCharacter.equals(NoteCharacter.DOWN))
+                            y = musicStaff.getValidNotePosition(positionNumber,true,currentStaffPosition);
+                        else if(noteCharacter.equals(NoteCharacter.UP))
+                            y = musicStaff.getValidNotePosition(positionNumber,false,currentStaffPosition);
+                        else return;
 
+                        ImageView imageView = new ImageView(image);
+                        imageView.setX(currentXPosition);
+                        imageView.setY(y);
+                        canvasPane.getChildren().add(imageView);
 
-                        if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap>MAX_CURRENT_X_POSITION )
-                        {
-                            if(currentRelativeXPosition!=wholeXGap) return;
-                            ImageView barImage = new ImageView(bar);
-                            barImage.setLayoutX(currentXPosition);
-                            barImage.setLayoutY(currentStaffPosition);
-                            canvasPane.getChildren().add(barImage);
-                            currentXPosition = currentXPosition + barGap;
-                            if(currentRelativeXPosition+barGap>wholeXGap)
-                                currentRelativeXPosition = 0;
-                            if(currentXPosition+barGap>MAX_CURRENT_X_POSITION)
-                            {
-                                currentXPosition = MIN_CURRENT_X_POSITION;
-                                currentStaffPosition = currentStaffPosition+STAFF_HEIGHT+STAFF_GAP;
-                                if(currentStaffPosition>length) return;
-                            }
+                        currentXPosition = currentXPosition + defaultXGap;
+                        currentRelativeXPosition+=defaultXGap;
 
-                        }
-
-
-                        if (noteCharacter.equals(NoteCharacter.DOWN)) {
-                            double positionY = currentStaffPosition + defaultYDownPositions.get(nameToDefaultInt.get(item.getText()));
-                            ImageView imageView = new ImageView(image);
-                            imageView.setX(currentXPosition);
-                            imageView.setY(positionY - STAFF_HEIGHT / 2);
-                            canvasPane.getChildren().add(imageView);
-                            currentXPosition = currentXPosition + defaultXGap;
-                            currentRelativeXPosition+=defaultXGap;
-                        } else if (noteCharacter.equals(NoteCharacter.UP)) {
-                            double positionY = currentStaffPosition + defaultYUpPositions.get(nameToDefaultInt.get(item.getText()));
-                            ImageView imageView = new ImageView(image);
-                            imageView.setX(currentXPosition);
-                            imageView.setY(positionY - STAFF_HEIGHT / 2);
-                            canvasPane.getChildren().add(imageView);
-                            currentXPosition = currentXPosition + wholeXGap * noteValue.getRelativeDuration();
-                            currentRelativeXPosition+=defaultXGap;
-                        }
                     });
                     getItems().add(item);
                 }
@@ -179,33 +157,14 @@ public class MusicSheet {
         if(noteCharacter.equals(NoteCharacter.REST))
         {
             double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
-            if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap>MAX_CURRENT_X_POSITION )
-            {
-                if(currentRelativeXPosition!=wholeXGap) return;
-                ImageView barImage = new ImageView(bar);
-                barImage.setLayoutX(currentXPosition);
-                barImage.setLayoutY(currentStaffPosition);
-                canvasPane.getChildren().add(barImage);
-                currentXPosition = currentXPosition + barGap;
-                if(currentRelativeXPosition+barGap>wholeXGap)
-                    currentRelativeXPosition = 0;
-                if(currentXPosition+barGap>MAX_CURRENT_X_POSITION)
-                {
-                    currentXPosition = MIN_CURRENT_X_POSITION;
-                    currentStaffPosition = currentStaffPosition+STAFF_HEIGHT+STAFF_GAP;
-                    if(currentStaffPosition>length) return;
-                }
-
-            }
-
-
+            if(!checkAndUpdateMeter(defaultXGap)) return;
             double positionY = currentStaffPosition;
             ImageView imageView = new ImageView(image);
             imageView.setX(currentXPosition);
             imageView.setY(positionY);
             canvasPane.getChildren().add(imageView);
-            currentXPosition = currentXPosition + wholeXGap * noteValue.getRelativeDuration();
-            currentRelativeXPosition+=wholeXGap*noteValue.getRelativeDuration();
+            currentXPosition = currentXPosition + defaultXGap;
+            currentRelativeXPosition+=defaultXGap;
         }
         else {
             PopupMenu popupMenu = new PopupMenu();
@@ -216,53 +175,32 @@ public class MusicSheet {
     public void setValidNote(Image image, double positionY, NoteValue noteValue, NoteCharacter noteCharacter)
     {
         ImageView imageView = new ImageView(image);
-
         double defaultXGap = wholeXGap*noteValue.getRelativeDuration();
 
-        if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap>MAX_CURRENT_X_POSITION )
-        {
-            if(currentRelativeXPosition!=wholeXGap) return;
-            ImageView barImage = new ImageView(bar);
-            barImage.setLayoutX(currentXPosition);
-            barImage.setLayoutY(currentStaffPosition);
-            canvasPane.getChildren().add(barImage);
-            currentXPosition = currentXPosition + barGap;
-            if(currentRelativeXPosition+barGap>wholeXGap)
-            currentRelativeXPosition = 0;
-            if(currentXPosition+barGap>MAX_CURRENT_X_POSITION)
-            {
-                currentXPosition = MIN_CURRENT_X_POSITION;
-                currentStaffPosition = currentStaffPosition+STAFF_HEIGHT+STAFF_GAP;
-                if(currentStaffPosition>length) return;
-            }
-
-        }
+        if(!checkAndUpdateMeter(defaultXGap)) return;
 
         double y;
         try{
             if(noteCharacter.equals(NoteCharacter.DOWN))
-            y = getValidYPosition(positionY,true);
+                y = musicStaff.getValidNotePosition(positionY, true, currentStaffPosition);
             else if(noteCharacter.equals(NoteCharacter.UP)) {
-                y = getValidYPosition(positionY, false);
+                y = musicStaff.getValidNotePosition(positionY, false, currentStaffPosition);
             }
-            else if(noteCharacter.equals(NoteCharacter.REST))
-            {
+            else if(noteCharacter.equals(NoteCharacter.REST)) {
                 y = currentStaffPosition;
             }
             else return;
         } catch (IllegalNotePosition illegalNotePosition) {
-
             return;
         }
-
 
         imageView.setLayoutY(y);
         imageView.setLayoutX(currentXPosition);
         currentXPosition+=defaultXGap;
         currentRelativeXPosition+=defaultXGap;
-
         canvasPane.getChildren().add(imageView);
     }
+
 
     public void setValidSign(Image image, double positionY,double positionX, NoteCharacter noteCharacter){
 
@@ -270,74 +208,18 @@ public class MusicSheet {
         double y;
         try {
             if(noteCharacter.equals(NoteCharacter.DOWN))
-                y = getValidYSignPosition(positionY, true);
+                y = musicStaff.getValidSignPosition(positionY, true, LINES_COUNT);
             else if(noteCharacter.equals(NoteCharacter.UP)) {
-                y = getValidYSignPosition(positionY, false);
+                y = musicStaff.getValidSignPosition(positionY, false,LINES_COUNT);
             }
             else return;
         } catch (IllegalNotePosition illegalNotePosition) {
             return;
         }
         imageView.setLayoutY(y);
-        imageView.setLayoutX(positionX-STAFF_HEIGHT/2);
-
+        imageView.setLayoutX(positionX-musicStaff.STAFF_HEIGHT/2);
         canvasPane.getChildren().add(imageView);
 
-    }
-
-    public double getValidYSignPosition(double positionY, boolean Down ) throws IllegalNotePosition
-    {
-        if(Down)
-        {
-            for(double d = MIN_CURRENT_STAFF_POSITION; d<=currentStaffPosition; d+=STAFF_GAP+STAFF_HEIGHT) {
-                for (Double defPos : defaultYDownPositions.values()) {
-                    if(d+defPos-INPUT_LINE_BOUND<=positionY && d+defPos+INPUT_LINE_BOUND>=positionY) {
-
-                        return d + defPos -STAFF_HEIGHT/2;
-                    }
-                }
-            }
-        }
-        else
-        {
-            for(double d = MIN_CURRENT_STAFF_POSITION; d<=currentStaffPosition; d+=STAFF_GAP+STAFF_HEIGHT) {
-                for (Double defPos : defaultYUpPositions.values()) {
-                    if(d+defPos-INPUT_LINE_BOUND<=positionY && d+defPos+INPUT_LINE_BOUND>=positionY) {
-
-                        return d + defPos -STAFF_HEIGHT/2;
-                    }
-                }
-            }
-        }
-        throw new IllegalNotePosition();
-    }
-
-
-    public double getValidYPosition(double positionY, boolean Down) throws IllegalNotePosition
-    {
-        if(Down)
-        for(Double defPos : defaultYDownPositions.values())
-        {
-
-            if(currentStaffPosition+defPos-INPUT_LINE_BOUND<=positionY && currentStaffPosition+defPos+INPUT_LINE_BOUND>=positionY) {
-
-                return currentStaffPosition + defPos -STAFF_HEIGHT/2;
-            }
-        }
-        else
-        {
-            for(Double defPos : defaultYUpPositions.values())
-            {
-
-                if(currentStaffPosition+defPos-INPUT_LINE_BOUND<=positionY && currentStaffPosition+defPos+INPUT_LINE_BOUND>=positionY) {
-                    System.out.println(currentStaffPosition+defPos);
-                    return currentStaffPosition + defPos -STAFF_HEIGHT/2;
-                }
-            }
-        }
-
-
-        throw new IllegalNotePosition();
     }
 
     public double getLength() {
@@ -348,7 +230,4 @@ public class MusicSheet {
         return width;
     }
 
-    public Image getStaffImage() {
-        return staff;
-    }
 }
