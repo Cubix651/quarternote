@@ -1,19 +1,19 @@
 package com.note.quarter;
 
 public class Note extends NoteRest {
-    private int midiCode;
+    NotePitch pitch;
 
-    public Note(NoteRestValue value, int midiCode) {
-        this.midiCode = midiCode;
+    public Note(NoteRestValue value, NotePitch pitch) {
+        this.pitch = pitch;
         setValue(value);
     }
 
-    public int getMidiCode() {
-        return midiCode;
+    public NotePitch getPitch() {
+        return pitch;
     }
 
-    public void setMidiCode(int midiCode) {
-        this.midiCode = midiCode;
+    public void setPitch(NotePitch pitch) {
+        this.pitch = pitch;
     }
 
     @Override
