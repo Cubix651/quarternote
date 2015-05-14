@@ -145,4 +145,11 @@ public class MainController implements Initializable {
         }
         musicSheet = new MusicSheet(canvas, canvasPane);
     }
+
+    public void restClickedHandler(Event event) {
+        Button source = (Button)event.getSource();
+        String[] split = source.getId().split("_");
+        String value = split[0];
+        musicSheet.addNoteRest(new Rest(NoteRestValue.valueOf(value.toUpperCase())));
+    }
 }

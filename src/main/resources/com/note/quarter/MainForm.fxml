@@ -95,7 +95,7 @@
                                     </image>
                                 </ImageView>
                             </graphic></Button>
-                        <Button fx:id="whole_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" GridPane.rowIndex="3">
+                        <Button fx:id="whole_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.rowIndex="3">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -121,7 +121,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="quarter_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler"  prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="quarter_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler"  onMouseClicked="#restClickedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -130,7 +130,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="half_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button fx:id="half_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.columnIndex="2" GridPane.rowIndex="2">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -166,7 +166,7 @@
                         </Button>
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <Button  fx:id="eighth_rest" contentDisplay="GRAPHIC_ONLY" layoutX="72.0" layoutY="284.0" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Button  fx:id="eighth_rest" contentDisplay="GRAPHIC_ONLY" layoutX="72.0" layoutY="284.0" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  >
                                     <image>
