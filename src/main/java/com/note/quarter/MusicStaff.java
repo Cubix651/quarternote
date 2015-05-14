@@ -18,13 +18,13 @@ public class MusicStaff {
     public final double MEASURE_WIDTH = 200;
 
     public final double CLEF_X_POSITION = 0;
-    public final double METER_Y_POSITION = 8;
+    public final double METER_X_POSITION = 5;
 
     private double lowestPositionY; //C4??
     private double currentStaffPosition;
 
-    public final double MIN_X_POSITION = 80;
-    public final double MAX_X_POSITION = MIN_X_POSITION + 3 * MEASURE_WIDTH; //width
+    public final double MIN_X_POSITION = 65;
+    public final double MAX_X_POSITION = MIN_X_POSITION + 4 * MEASURE_WIDTH; //width
     public double currentXPosition = MIN_X_POSITION;
     public double currentRelativeXPosition = 0;
 
@@ -56,7 +56,7 @@ public class MusicStaff {
             Image clef = ImageResource.getClef();
             canvas.getGraphicsContext2D().drawImage(clef, CLEF_X_POSITION, y - (clef.getHeight() - STAFF_HEIGHT) / 2);
             Image meter = ImageResource.getMeter();
-            canvas.getGraphicsContext2D().drawImage(meter, METER_Y_POSITION,y - (meter.getHeight() - STAFF_HEIGHT) / 2);
+            canvas.getGraphicsContext2D().drawImage(meter, METER_X_POSITION,y - (meter.getHeight() - STAFF_HEIGHT) / 2);
             y += GAP_BETWEEN_STAFFS + STAFF_HEIGHT;
         }
     }
