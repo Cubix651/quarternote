@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
 <GridPane alignment="CENTER" hgap="10" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler" prefHeight="800" prefWidth="1100.0" stylesheets="@keyStyles.css" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController">
     <columnConstraints>
         <ColumnConstraints />
@@ -28,10 +26,10 @@
             <children>
                 <ScrollPane GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="1">
                     <content>
-                        <Pane fx:id="canvasPane" onDragDropped="#setNoteDragDroped" onDragOver="#setNoteDragOver" prefHeight="1600.0" prefWidth="870.0">
-                           <children>
-                            <Canvas fx:id="canvas" height="1600" width="870" />
-                           </children>
+                        <Pane fx:id="canvasPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefHeight="1600.0" prefWidth="870.0">
+                            <children>
+                                <Canvas fx:id="canvas" height="1600" width="870" />
+                            </children>
                         </Pane>
                     </content>
                 </ScrollPane>
@@ -53,24 +51,24 @@
                     </rowConstraints>
                     <children>
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" GridPane.columnIndex="1" GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="4"/>
-                        <Button fx:id="NOTE_QUARTER_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/notes/up/quarter.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                        <Button fx:id="NOTE_EIGHTH_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="1">
+                        <Button fx:id="quarter_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0">
                             <graphic>
-                            <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@images/notes/up/eighth.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/notes/up/quarter.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
+                        <Button fx:id="eighth_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="1">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/notes/up/eighth.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
                         </Button>
-                        <Button fx:id="NOTE_HALF_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
+                        <Button fx:id="half_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
                             <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -79,83 +77,83 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="NOTE_QUARTER_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" onMouseClicked="#NoteClicked"  prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <graphic>
+                        <Button fx:id="quarter_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0"  prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/notes/down/quarter.png" />
                                     </image>
                                 </ImageView>
-                     </graphic>
+                            </graphic>
                         </Button>
 
-                        <Button fx:id="NOTE_EIGHTH_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked"  GridPane.rowIndex="2">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/notes/down/eighth.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                        <Button fx:id="NOTE_WHOLE_REST" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" GridPane.rowIndex="3">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/rests/whole.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                        <Button fx:id="NOTE_WHOLE_UP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2">
-                        <graphic>
-                            <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@images/notes/up/whole.png" />
-                                </image>
-                            </ImageView>
-                        </graphic></Button>
+                        <Button fx:id="eighth_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.rowIndex="2">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/notes/down/eighth.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
+                        <Button fx:id="whole_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" GridPane.rowIndex="3">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/rests/whole.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
+                        <Button fx:id="whole_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/notes/up/whole.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
 
-                        <Button fx:id="NOTE_HALF_DOWN" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/notes/down/half.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
+                        <Button fx:id="half_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/notes/down/half.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
                         </Button>
-                        <Button fx:id="NOTE_QUARTER_REST" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected"  onMouseClicked="#NoteClicked" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/rests/quarter.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                       </Button>
-                        <Button fx:id="NOTE_HALF_REST" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected"  onMouseClicked="#NoteClicked" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/rests/half.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                        <Button fx:id="SIGN_UP_SHARP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#setNoteDragDetected"  GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <graphic>
+                        <Button fx:id="quarter_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler"  prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/rests/quarter.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="half_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/rests/half.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
+                        <Button fx:id="SIGN_UP_SHARP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.columnIndex="2" GridPane.rowIndex="3">
+                            <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/signs/sharp.png" />
                                     </image>
                                 </ImageView>
-                     </graphic></Button>
-                        <Button fx:id="SIGN_UP_FLAT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#setNoteDragDetected" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="4">
-                     <graphic>
+                            </graphic></Button>
+                        <Button fx:id="SIGN_UP_FLAT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="4">
+                            <graphic>
                                 <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/signs/flat.png" />
                                     </image>
                                 </ImageView>
-                     </graphic></Button>
+                            </graphic></Button>
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
 
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="5" />
@@ -165,17 +163,17 @@
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"  prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="7">
 
-                         </Button>
+                        </Button>
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <Button  fx:id="NOTE_EIGHTH_REST" onMouseClicked="#NoteClicked" contentDisplay="GRAPHIC_ONLY" layoutX="72.0" layoutY="284.0" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" onDragDetected="#setNoteDragDetected" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  >
-                           <image>
-                              <Image url="@images/rests/eighth.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
+                        <Button  fx:id="eighth_rest" contentDisplay="GRAPHIC_ONLY" layoutX="72.0" layoutY="284.0" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  >
+                                    <image>
+                                        <Image url="@images/rests/eighth.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic></Button>
                         <Button contentDisplay="GRAPHIC_ONLY" layoutX="135.0" layoutY="353.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     </children>
                 </GridPane>

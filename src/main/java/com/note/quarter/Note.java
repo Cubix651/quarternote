@@ -1,7 +1,7 @@
 package com.note.quarter;
 
 public class Note extends NoteRest {
-    NotePitch pitch;
+    private NotePitch pitch;
 
     public Note(NoteRestValue value, NotePitch pitch) {
         this.pitch = pitch;

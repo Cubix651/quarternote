@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 
@@ -22,6 +22,7 @@ public class MainController implements Initializable {
     @FXML private Pane pianoPane;
     @FXML private Canvas canvas;
     @FXML private Pane canvasPane;
+    private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
     private MusicSheet musicSheet;
     private Map<Integer, Button> pianoKeys = new HashMap<>();
@@ -57,6 +58,7 @@ public class MainController implements Initializable {
             melodyPlayer.noteOn(noteNumber);
             Button button = pianoKeys.get(noteNumber);
             button.getStyleClass().replaceAll(s -> s + "Pressed");
+            musicSheet.addNoteRest(new Note(NoteRestValue.EIGHTH, new NotePitch(noteNumber)));
         }
     }
 
@@ -92,54 +94,49 @@ public class MainController implements Initializable {
         releasePianoKey(noteNumber);
     }
 
-    public void setNoteDragDetected(Event event) {
+    public void noteRestDragDetectedHandler(Event event) {
         Button source = (Button) event.getSource();
-        ImageView view = (javafx.scene.image.ImageView) source.getGraphic();
+        String[] split = source.getId().split("_");
+        String value = split[0];
+        String kind = split[1];
+        NoteRest noteRest = null;
+        Image image = null;
+        if(kind.equals("note")) {
+            noteRest = new Note(NoteRestValue.valueOf(value.toUpperCase()), null);
+            image = ImageResource.getUpNoteImage(noteRest.getValue());
+        }
+        else if(kind.equals("rest")) {
+            noteRest = new Rest(NoteRestValue.valueOf(value.toUpperCase()));
+            image = ImageResource.getRestImage(noteRest.getValue());
+        }
 
         Dragboard dragboard = source.startDragAndDrop(TransferMode.COPY);
-
         ClipboardContent content = new ClipboardContent();
-        content.putImage(view.getImage());
-        content.putString(source.getId());
+        content.putImage(image);
+        content.put(NOTE_FORMAT, noteRest);
         dragboard.setContent(content);
         event.consume();
     }
 
-    public void setNoteDragOver(DragEvent event) {
+    public void noteRestDragOverHandler(DragEvent event) {
         if (event.getGestureSource() != event.getSource() && event.getDragboard().hasImage()) {
             event.acceptTransferModes(TransferMode.COPY);
         }
         event.consume();
     }
 
-    public void setNoteDragDroped(DragEvent event) {
+    public void noteRestDragDroppedHandler(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
-        boolean isSuccesful = false;
+        boolean isSuccessful = false;
 
-        if (dragboard.hasImage() && dragboard.hasString()) {
-            String[] info = dragboard.getString().split("_");
-            if (info.length == 3) {
-                if (info[0].equals("NOTE")) {
-                    NoteRestValue v = NoteRestValue.valueOf(info[1]); //50x50 default image size;
-                    NoteCharacter c = NoteCharacter.valueOf(info[2]);
+        if(dragboard.hasContent(NOTE_FORMAT)) {
+            NoteRest noteRest = (NoteRest) dragboard.getContent(NOTE_FORMAT);
                     double y = event.getY();
-
-                    musicSheet.setValidNote(dragboard.getImage(), y, v, c);
-
-                    isSuccesful = true;
-                } else if (info[0].equals("SIGN")) {
-                    NoteCharacter c = NoteCharacter.valueOf(info[1]);
-                    double y = event.getY();
-                    double x = event.getX();
-                    musicSheet.setValidSign(dragboard.getImage(), y, x, c);
-                    isSuccesful = true;
-                }
-            }
-
+                    musicSheet.addNoteRest(noteRest, y);
+                    isSuccessful = true;
         }
-        event.setDropCompleted(isSuccesful);
+        event.setDropCompleted(isSuccessful);
         event.consume();
-
     }
 
     public void setUpNewProject(Event event) throws IOException {
@@ -147,22 +144,5 @@ public class MainController implements Initializable {
             canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
         }
         musicSheet = new MusicSheet(canvas, canvasPane);
-    }
-
-    public void NoteClicked(MouseEvent event) {
-        Button source = (Button) event.getSource();
-        double x = event.getScreenX();
-        double y = event.getScreenY();
-        String[] info = source.getId().split("_");
-        if (info.length == 3) {
-            if (info[0].equals("NOTE")) {
-                NoteRestValue v = NoteRestValue.valueOf(info[1]);
-                NoteCharacter c = NoteCharacter.valueOf(info[2]);
-                ImageView imageView = (ImageView) source.getChildrenUnmodifiable().get(0);
-                musicSheet.setNote(imageView.getImage(), v, c, source, x, y);
-            }
-
-        }
-        event.consume();
     }
 }

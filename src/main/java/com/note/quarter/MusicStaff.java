@@ -2,113 +2,135 @@ package com.note.quarter;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 import static java.lang.Math.round;
 
-
-/**
- * Created by stella on 12.05.15.
- */
 public class MusicStaff {
 
-    public final double STAFF_GAP;
-    public final double STAFF_WIDTH;
     public final double STAFF_HEIGHT;
-    public final double REAL_LINE_GAP;
-    public final double LINE_GAP;
-    public final double INPUT_LINE_BOUND;
-    public final double CLEF_POSITION = 0;
-    public final double METER_POSITION;
+    public final double GAP_BETWEEN_STAFFS;
+    public final double GAP_BETWEEN_PITCHES;
+    public final double NOTEREST_HEIGHT = 50;
+    public final double NUMBER_OF_HIGHEST_NOTE_IN_SCALE = 13;
+    public final NotePitch LOWEST_PITCH = new NotePitch(60);
+    public final double NOTEREST_SHIFT = 6;
 
+    public final double CLEF_X_POSITION = 0;
+    public final double METER_Y_POSITION = 8;
 
-    private double lowestDownCentrePositionY; //C4??
-    private double lowestUpCentrePositionY;
-    private double center;
-    private Image image;
-    private Image meter;
-    private Image clef;
+    private double lowestPositionY; //C4??
+    public double currentStaffPosition;
 
-    public MusicStaff(Image image, Image meter, Image clef)
+    private final double barGap = 20;
+
+    public double wholeXGap = 180 + 2;   //to do : change with constructor - deafult =180 - gap for whole note
+    public final double MIN_X_POSITION = 60;
+    public final double MAX_X_POSITION = 850; //width
+    public double currentXPosition = MIN_X_POSITION;
+    public double currentRelativeXPosition = 0;
+    public final int LINES_COUNT;
+
+    private Canvas canvas;
+    private Pane canvasPane;
+
+    public MusicStaff(Canvas canvas, Pane canvasPane)
     {
-        this.image = image;
-        this.meter = meter;
-        this.clef = clef;
+        STAFF_HEIGHT = ImageResource.getStaff().getHeight();
+        GAP_BETWEEN_STAFFS = STAFF_HEIGHT;
+        GAP_BETWEEN_PITCHES = STAFF_HEIGHT/8;
 
-        STAFF_GAP = image.getHeight();
-        STAFF_HEIGHT = image.getHeight();
-        STAFF_WIDTH = image.getWidth();
-        REAL_LINE_GAP = STAFF_HEIGHT/4;
-        LINE_GAP = REAL_LINE_GAP/2;
-        INPUT_LINE_BOUND = LINE_GAP/2;
-        METER_POSITION = 0.4*STAFF_HEIGHT;
+        lowestPositionY = STAFF_HEIGHT + 2 * GAP_BETWEEN_PITCHES;
 
-        this.lowestDownCentrePositionY  = STAFF_HEIGHT/2 + REAL_LINE_GAP + LINE_GAP;
-        this.lowestUpCentrePositionY = lowestDownCentrePositionY+STAFF_HEIGHT/2 + REAL_LINE_GAP;
-        center = STAFF_HEIGHT/2;
+        currentStaffPosition = GAP_BETWEEN_STAFFS;
+        LINES_COUNT = drawStaff(canvas);
+
+        this.canvas = canvas;
+        this.canvasPane = canvasPane;
     }
 
-    public int drawStaff(Canvas canvas, double sheetLength, double sheetWidth, double meterPosition) //mP 8
+    public int drawStaff(Canvas canvas)
     {
+        double sheetHeight = canvas.getHeight();
         int counter = 0;
-        double y = STAFF_GAP+STAFF_HEIGHT;
-        while(y+STAFF_HEIGHT+STAFF_GAP<sheetLength)
+        double y = GAP_BETWEEN_STAFFS;
+        while(y+STAFF_HEIGHT+ GAP_BETWEEN_STAFFS <sheetHeight)
         {
-            canvas.getGraphicsContext2D().drawImage(image,0,y,sheetWidth,STAFF_HEIGHT);
-            canvas.getGraphicsContext2D().drawImage(clef,CLEF_POSITION,y-center);
-            canvas.getGraphicsContext2D().drawImage(meter,meterPosition,y-center);
-            y = y+STAFF_GAP+STAFF_HEIGHT;
+            canvas.getGraphicsContext2D().drawImage(ImageResource.getStaff(),0,y);
+            Image clef = ImageResource.getClef();
+            canvas.getGraphicsContext2D().drawImage(clef, CLEF_X_POSITION, y - (clef.getHeight() - STAFF_HEIGHT) / 2);
+            Image meter = ImageResource.getMeter();
+            canvas.getGraphicsContext2D().drawImage(meter, METER_Y_POSITION,y - (meter.getHeight() - STAFF_HEIGHT) / 2);
+            y += GAP_BETWEEN_STAFFS + STAFF_HEIGHT;
             counter++;
         }
         return counter;
     }
 
-    public double getValidNotePosition(double positionY, boolean down, double currentStaffPosition) throws IllegalNotePosition
-    {
-            if(down) {
-                positionY-=currentStaffPosition;
-                long n = round((lowestDownCentrePositionY - positionY) / LINE_GAP);
-                if (n < 0 || n > 13) throw new IllegalNotePosition();
-                return currentStaffPosition+lowestDownCentrePositionY - n * LINE_GAP - center;
-            }
-            else {
-                positionY-=currentStaffPosition;
-                long n = round((lowestUpCentrePositionY - positionY)/LINE_GAP );
-                if(n<0 || n>13) throw new IllegalNotePosition();
-                return currentStaffPosition+lowestUpCentrePositionY-n*LINE_GAP - center;
-            }
+    public NotePitch computePitchFromYPosition(double y) {
+        double relativeY = currentStaffPosition + lowestPositionY - y;
+        relativeY -= NOTEREST_HEIGHT / 2;
+        relativeY += NOTEREST_SHIFT;
+        int n = (int) round(relativeY / GAP_BETWEEN_PITCHES);
+        if (n < 0 || n > NUMBER_OF_HIGHEST_NOTE_IN_SCALE) return null;
+        return new NotePitch(LOWEST_PITCH.getIndex() + n, false);
     }
 
-    public double getValidSignPosition(double positionY, boolean down, final double LINES_COUNT) throws IllegalNotePosition
-    {
-            if(down)
-            {
-                long staffnumber = round(positionY/(STAFF_HEIGHT+STAFF_GAP));
-                if(staffnumber<1 || staffnumber>LINES_COUNT) throw new IllegalNotePosition();
-                double staffPosition = staffnumber * (STAFF_HEIGHT+STAFF_GAP);
-                positionY-=staffPosition;
-                long n = round((lowestDownCentrePositionY - positionY) / LINE_GAP);
-                if (n < 0 || n > 13) throw new IllegalNotePosition();
-                return staffPosition+lowestDownCentrePositionY-n*LINE_GAP - center;
-            }
-            else
-            {
-                long staffnumber = round(positionY/(STAFF_HEIGHT+STAFF_GAP));
-                if(staffnumber<1 || staffnumber>LINES_COUNT) throw new IllegalNotePosition();
-                double staffPosition = staffnumber * (STAFF_HEIGHT+STAFF_GAP);
-                positionY-=staffPosition;
-                long n = round((lowestUpCentrePositionY - positionY) / LINE_GAP);
-                if (n < 0 || n > 13) throw new IllegalNotePosition();
-                return staffPosition+lowestUpCentrePositionY-n*LINE_GAP - center;
-            }
+    public double computeYPositionFromPitch(NotePitch pitch) {
+        double y = currentStaffPosition + lowestPositionY;
+        y -= (pitch.getIndex() - LOWEST_PITCH.getIndex()) * GAP_BETWEEN_PITCHES;
+        y -= NOTEREST_HEIGHT;
+        y += NOTEREST_SHIFT;
+        return y;
     }
 
-    public double getValidNotePosition(int noteNumber,boolean down, double currentStaffPosition)
+    private boolean checkAndUpdateMeter(double defaultXGap)
     {
-        if(down)
-          return  currentStaffPosition+lowestDownCentrePositionY-noteNumber*LINE_GAP - center;
+        if(currentRelativeXPosition+defaultXGap>wholeXGap || currentXPosition+defaultXGap> MAX_X_POSITION)
+        {
+            if(currentRelativeXPosition!=wholeXGap) return false;  //it illegal to insert a note;
+            ImageView barImage = new ImageView(ImageResource.getBar());
+            barImage.setLayoutX(currentXPosition);
+            barImage.setLayoutY(currentStaffPosition);
+            canvasPane.getChildren().add(barImage);
+            currentXPosition = currentXPosition + barGap;
+
+            if(currentRelativeXPosition+barGap>wholeXGap)
+                currentRelativeXPosition = 0;
+            if(currentXPosition+barGap> MAX_X_POSITION)
+            {
+                currentXPosition = MIN_X_POSITION;
+                currentStaffPosition += STAFF_HEIGHT+GAP_BETWEEN_STAFFS;
+                if(currentStaffPosition > canvas.getHeight()) return false; //no more place to insert
+            }
+
+        }
+        return true;
+    }
+
+    public void drawNoteRest(NoteRest noteRest) {
+        ImageView imageView;
+        if (noteRest.isNote())
+            imageView = new ImageView(ImageResource.getUpNoteImage(noteRest.getValue()));
         else
-            return currentStaffPosition+lowestUpCentrePositionY-noteNumber*LINE_GAP - center;
+            imageView = new ImageView(ImageResource.getRestImage(noteRest.getValue()));
+
+        double defaultXGap = wholeXGap * noteRest.getValue().getRelativeValue();
+        if (!checkAndUpdateMeter(defaultXGap)) return;
+
+        double y;
+        if (noteRest.isNote()) {
+            Note note = (Note) noteRest;
+            y = computeYPositionFromPitch(note.getPitch());
+        } else {
+            y = currentStaffPosition;
+        }
+
+        imageView.setLayoutY(y);
+        imageView.setLayoutX(currentXPosition);
+        currentXPosition += defaultXGap;
+        currentRelativeXPosition += defaultXGap;
+        canvasPane.getChildren().add(imageView);
     }
-
-
 }
