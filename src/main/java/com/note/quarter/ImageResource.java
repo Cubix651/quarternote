@@ -12,7 +12,7 @@ public class ImageResource {
 
     private static Image staff = new Image(ImageResource.class.getResource("images/staff.png").toString());
     private static Image clef = new Image(ImageResource.class.getResource("images/gclef.png").toString());
-    private static Image bar = new Image(ImageResource.class.getResource("images/bar.png").toString());
+    private static Image barLine = new Image(ImageResource.class.getResource("images/barLine.png").toString());
     private static Image meter = new Image(ImageResource.class.getResource("images/commontime.png").toString());
     
     static {
@@ -44,8 +44,8 @@ public class ImageResource {
         return clef;
     }
 
-    public static Image getBar() {
-        return bar;
+    public static Image getBarLine() {
+        return barLine;
     }
 
     public static Image getMeter() {
