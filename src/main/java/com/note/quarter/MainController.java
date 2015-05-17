@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
@@ -22,13 +23,15 @@ public class MainController implements Initializable {
     @FXML private Pane pianoPane;
     @FXML private Canvas canvas;
     @FXML private Pane canvasPane;
+    @FXML private ToggleButton metronomeButton;
     private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
     private MusicSheet musicSheet;
-    private Map<Integer, Button> pianoKeys = new HashMap<>();
+    private MetronomeScheduler metronomeScheduler;
+    private Map<Integer, TimeButton> pianoKeys = new HashMap<>();
     private MelodyPlayer melodyPlayer;
-
     private Map<String, Integer> keyboardMapping = new HashMap<>();
+
     String keyboardMappingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
 
     @Override
@@ -38,6 +41,7 @@ public class MainController implements Initializable {
             keyboardMapping.put(keyboardMappingSequence.charAt(i) + "", 60 + i);
         }
 
+        metronomeScheduler = new MetronomeScheduler();
         musicSheet = new MusicSheet(canvas, canvasPane);
 
         try {
@@ -48,7 +52,7 @@ public class MainController implements Initializable {
 
         for (Node node : pianoPane.getChildren()) {
             if (node.getId() != null && node.getId().startsWith("key")) {
-                pianoKeys.put(Integer.parseInt(node.getId().substring(3)), (Button) node);
+                pianoKeys.put(Integer.parseInt(node.getId().substring(3)), (TimeButton) node);
             }
         }
     }
@@ -56,17 +60,23 @@ public class MainController implements Initializable {
     private void pressPianoKey(int noteNumber) {
         if (!melodyPlayer.isNoteOn(noteNumber)) {
             melodyPlayer.noteOn(noteNumber);
-            Button button = pianoKeys.get(noteNumber);
+            TimeButton button = pianoKeys.get(noteNumber);
             button.getStyleClass().replaceAll(s -> s + "Pressed");
-            musicSheet.addNoteRest(new Note(NoteRestValue.EIGHTH, new NotePitch(noteNumber)));
+            button.setPressedTime(System.nanoTime());
+
         }
     }
 
     private void releasePianoKey(int noteNumber) {
         if (melodyPlayer.isNoteOn(noteNumber)) {
             melodyPlayer.noteOff(noteNumber);
-            Button button = pianoKeys.get(noteNumber);
+            TimeButton button = pianoKeys.get(noteNumber);
+            long duration = (System.nanoTime()-button.getPressedTime())/1000000; //in miliseconds
             button.getStyleClass().replaceAll(s -> s.substring(0, s.length() - "Pressed".length()));
+            if(musicSheet.isRecording()) {
+                NoteRestValue value = metronomeScheduler.getNoteRestValueFromDuration(duration);
+                musicSheet.addNoteRest(new Note(value, new NotePitch(noteNumber)));
+            }
         }
     }
 
@@ -144,6 +154,7 @@ public class MainController implements Initializable {
             canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
         }
         musicSheet = new MusicSheet(canvas, canvasPane);
+        event.consume();
     }
 
     public void restClickedHandler(Event event) {
@@ -151,5 +162,46 @@ public class MainController implements Initializable {
         String[] split = source.getId().split("_");
         String value = split[0];
         musicSheet.addNoteRest(new Rest(NoteRestValue.valueOf(value.toUpperCase())));
+        event.consume();
+    }
+
+    public void setUpBPMHanlder(KeyEvent event) {
+        BPMTextField source = (BPMTextField)event.getSource();
+        if(event.getCode().equals(KeyCode.ENTER))
+        {
+            metronomeScheduler.setBPM(Integer.parseInt(source.getText()));
+            if(metronomeButton.isSelected()) {
+                metronomeButton.setSelected(false);
+                metronomeButton.setText("Metronome Off");
+            }
+        }
+
+        event.consume();
+    }
+
+    public void metronomeClickedHandler(Event event) {
+        ToggleButton source = (ToggleButton)event.getSource();
+        if(source.isSelected())
+        {
+            source.setText("Metronome On");
+            metronomeScheduler.metronomeOn();
+        }
+        else
+        {
+            metronomeScheduler.metronomeOff();
+            source.setText("Metronome Off");
+        }
+
+    }
+
+    public MetronomeScheduler getMetronomeScheduler()
+    {
+        return metronomeScheduler;
+    }
+
+    public void recordClickedHandler(Event event) {
+        ToggleButton source = (ToggleButton)event.getSource();
+        musicSheet.setRecording(source.isSelected());
+
     }
 }

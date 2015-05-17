@@ -5,6 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import com.note.quarter.BPMTextField?>
+<?import com.note.quarter.TimeButton?>
+
 <GridPane alignment="CENTER" hgap="10" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler" prefHeight="800" prefWidth="1100.0" stylesheets="@keyStyles.css" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController">
     <columnConstraints>
         <ColumnConstraints />
@@ -183,30 +186,30 @@
                             <children>
                                 <Pane fx:id="pianoPane" layoutX="1.0" layoutY="2.0" prefHeight="206.0" prefWidth="744.0">
                                     <children>
-                                        <Button fx:id="key60" contentDisplay="GRAPHIC_ONLY" layoutX="0.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key62" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key64" contentDisplay="GRAPHIC_ONLY" layoutX="100.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key65" contentDisplay="GRAPHIC_ONLY" layoutX="150.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key67" contentDisplay="GRAPHIC_ONLY" layoutX="200.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key69" contentDisplay="GRAPHIC_ONLY" layoutX="250.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key71" contentDisplay="GRAPHIC_ONLY" layoutX="300.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key72" contentDisplay="GRAPHIC_ONLY" layoutX="350.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key74" contentDisplay="GRAPHIC_ONLY" layoutX="400.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key76" contentDisplay="GRAPHIC_ONLY" layoutX="450.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key77" contentDisplay="GRAPHIC_ONLY" layoutX="500.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key79" contentDisplay="GRAPHIC_ONLY" layoutX="550.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key81" contentDisplay="GRAPHIC_ONLY" layoutX="600.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key83" contentDisplay="GRAPHIC_ONLY" layoutX="650.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <Button fx:id="key61" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="30.0" styleClass="blackKey" />
-                                        <Button fx:id="key63" contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key66" contentDisplay="GRAPHIC_ONLY" layoutX="185.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key68" contentDisplay="GRAPHIC_ONLY" layoutX="235.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key70" contentDisplay="GRAPHIC_ONLY" layoutX="285.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key73" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key75" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key78" contentDisplay="GRAPHIC_ONLY" layoutX="535.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key80" contentDisplay="GRAPHIC_ONLY" layoutX="585.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <Button fx:id="key82" contentDisplay="GRAPHIC_ONLY" layoutX="635.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key60" contentDisplay="GRAPHIC_ONLY" layoutX="0.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key62" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key64" contentDisplay="GRAPHIC_ONLY" layoutX="100.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key65" contentDisplay="GRAPHIC_ONLY" layoutX="150.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key67" contentDisplay="GRAPHIC_ONLY" layoutX="200.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key69" contentDisplay="GRAPHIC_ONLY" layoutX="250.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key71" contentDisplay="GRAPHIC_ONLY" layoutX="300.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key72" contentDisplay="GRAPHIC_ONLY" layoutX="350.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key74" contentDisplay="GRAPHIC_ONLY" layoutX="400.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key76" contentDisplay="GRAPHIC_ONLY" layoutX="450.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key77" contentDisplay="GRAPHIC_ONLY" layoutX="500.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key79" contentDisplay="GRAPHIC_ONLY" layoutX="550.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key81" contentDisplay="GRAPHIC_ONLY" layoutX="600.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key83" contentDisplay="GRAPHIC_ONLY" layoutX="650.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                                        <TimeButton fx:id="key61" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="30.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key63" contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key66" contentDisplay="GRAPHIC_ONLY" layoutX="185.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key68" contentDisplay="GRAPHIC_ONLY" layoutX="235.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key70" contentDisplay="GRAPHIC_ONLY" layoutX="285.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key73" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key75" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key78" contentDisplay="GRAPHIC_ONLY" layoutX="535.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key80" contentDisplay="GRAPHIC_ONLY" layoutX="585.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                                        <TimeButton fx:id="key82" contentDisplay="GRAPHIC_ONLY" layoutX="635.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
                                     </children>
                                 </Pane>
                                 <VBox alignment="CENTER" layoutX="722.5" layoutY="2.0" prefHeight="187.0" prefWidth="138.0">
@@ -246,10 +249,21 @@
                 <ComboBox prefHeight="31.0" prefWidth="183.0" promptText="Custom Note" GridPane.columnIndex="1" />
                 <VBox alignment="TOP_CENTER" prefHeight="206.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <children>
-                        <Label alignment="CENTER" prefHeight="48.0" prefWidth="130.0" text="Record" />
-                        <ToggleButton mnemonicParsing="false" prefHeight="41.0" prefWidth="121.0" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="118.0" text="Play" />
-                        <ToggleButton layoutX="15.0" layoutY="58.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="121.0" />
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="130.0" text="Record" />
+                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" onMouseClicked="#recordClickedHandler" >
+                        <graphic>
+                            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@images/other/record.png" />
+                                </image>
+                            </ImageView>
+                        </graphic></ToggleButton>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
+                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0"/>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
+                        <BPMTextField alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
+                        <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" onMouseClicked="#metronomeClickedHandler"/>
                     </children>
                 </VBox>
             </children>

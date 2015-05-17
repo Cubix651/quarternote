@@ -10,9 +10,11 @@ import java.util.List;
 public class MusicSheet {
     private MusicStaff musicStaff;
     private List<NoteRest> noteRestList = new LinkedList<>();
+    private boolean isRecording;
 
     public MusicSheet(Canvas canvas, Pane canvasPane) {
         musicStaff = new MusicStaff(canvas, canvasPane);
+
     }
 
     public void addNoteRest(NoteRest noteRest) {
@@ -29,5 +31,13 @@ public class MusicSheet {
             note.setPitch(pitch);
         }
         addNoteRest(noteRest);
+    }
+
+    public boolean isRecording() {
+        return isRecording;
+    }
+
+    public void setRecording(boolean isRecording) {
+        this.isRecording = isRecording;
     }
 }

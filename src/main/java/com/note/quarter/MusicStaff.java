@@ -28,6 +28,7 @@ public class MusicStaff {
     public double currentXPosition = MIN_X_POSITION;
     public double currentRelativeXPosition = 0;
 
+
     private Canvas canvas;
     private Pane canvasPane;
 
