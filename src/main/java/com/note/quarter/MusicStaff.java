@@ -142,6 +142,10 @@ public class MusicStaff {
             remainingUnits += ((NoteRestNode) item).getNoteRest().getValue().getRelativeValue();
         }
         else if(item instanceof BarLineNode) {
+            if(currentXPosition < MIN_X_POSITION) {
+                currentXPosition = nodes.getLast().getLayoutX() + nodes.getLast().getWidth();
+                currentStaffPosition -= STAFF_HEIGHT + GAP_BETWEEN_STAFFS;
+            }
             remainingUnits = 0;
         }
     }

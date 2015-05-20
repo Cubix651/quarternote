@@ -261,7 +261,7 @@
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
                         <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0"/>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
-                        <BPMTextField alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
+                        <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
                         <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" onMouseClicked="#metronomeClickedHandler"/>
                     </children>
