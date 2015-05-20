@@ -3,20 +3,15 @@ package com.note.quarter;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 
-import java.util.LinkedList;
-import java.util.List;
-
 
 public class MusicSheet {
     private MusicStaff musicStaff;
-    private List<NoteRest> noteRestList = new LinkedList<>();
 
     public MusicSheet(Canvas canvas, Pane canvasPane) {
         musicStaff = new MusicStaff(canvas, canvasPane);
     }
 
     public void addNoteRest(NoteRest noteRest) {
-        noteRestList.add(noteRest);
         musicStaff.drawNoteRest(noteRest);
     }
 

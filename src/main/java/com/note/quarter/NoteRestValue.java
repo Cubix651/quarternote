@@ -1,18 +1,18 @@
 package com.note.quarter;
 
 public enum NoteRestValue {
-    WHOLE(1),
-    HALF(0.5),
-    QUARTER(0.25),
-    EIGHTH(0.125);
+    WHOLE(16),
+    HALF(8),
+    QUARTER(4),
+    EIGHTH(2);
 
-    private double relativeValue;
+    private int relativeValue;
 
-    public double getRelativeValue() {
+    public int getRelativeValue() {
         return relativeValue;
     }
 
-    NoteRestValue(double relativeValue) {
+    NoteRestValue(int relativeValue) {
         this.relativeValue = relativeValue;
     }
 }
