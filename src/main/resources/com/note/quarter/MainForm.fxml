@@ -254,12 +254,20 @@
                         <graphic>
                             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
-                                    <Image url="@images/other/record.png" />
+                                    <Image url="@images/buttons/record.png" />
                                 </image>
                             </ImageView>
                         </graphic></ToggleButton>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
-                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0"/>
+                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" >
+                            <graphic>
+                                <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/buttons/play.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </ToggleButton>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
                         <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
