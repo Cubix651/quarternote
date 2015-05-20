@@ -74,6 +74,8 @@ public class MainController implements Initializable {
         String key = event.getText();
         if (keyboardMapping.containsKey(key)) {
             pressPianoKey(keyboardMapping.get(key));
+        } else if(event.getCode() == KeyCode.BACK_SPACE) {
+            musicSheet.deleteLastNoteRest();
         }
     }
 

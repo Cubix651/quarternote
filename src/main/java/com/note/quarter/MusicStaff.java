@@ -131,4 +131,24 @@ public class MusicStaff {
                 gotoNextRow();
         }
     }
+
+    private void eraseLastSheetItem() {
+        SheetItem item = nodes.getLast();
+        canvasPane.getChildren().remove(item);
+        nodes.removeLast();
+        currentXPosition -= item.getWidth();
+        if(item instanceof NoteRestNode) {
+            remainingUnits += ((NoteRestNode) item).getNoteRest().getValue().getRelativeValue();
+        }
+        else if(item instanceof BarLineNode) {
+            remainingUnits = 0;
+        }
+    }
+
+    public void eraseLastNoteRest() {
+        while(!nodes.isEmpty() && nodes.getLast() instanceof BarLineNode)
+            eraseLastSheetItem();
+        if(!nodes.isEmpty())
+            eraseLastSheetItem();
+    }
 }
