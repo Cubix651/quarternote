@@ -8,6 +8,7 @@ import java.util.Map;
 public class ImageResource {
     private static Map<NoteRestValue, Image> upNotes = new HashMap<>();
     private static Map<NoteRestValue, Image> downNotes = new HashMap<>();
+    private static Map<NoteRestValue, Image> sharpNotes = new HashMap<>();
     private static Map<NoteRestValue, Image> rests = new HashMap<>();
 
     private static Image staff = new Image(ImageResource.class.getResource("images/staff.png").toString());
@@ -20,6 +21,7 @@ public class ImageResource {
             String name = value.name().toLowerCase();
             upNotes.put(value, new Image(ImageResource.class.getResource("images/notes/up/" + name + ".png").toString()));
             downNotes.put(value, new Image(ImageResource.class.getResource("images/notes/down/" + name + ".png").toString()));
+            sharpNotes.put(value, new Image(ImageResource.class.getResource("images/notes/sharp/" + name + ".png").toString()));
             rests.put(value, new Image(ImageResource.class.getResource("images/rests/" + name + ".png").toString()));
         }
     }
@@ -30,6 +32,10 @@ public class ImageResource {
 
     public static Image getDownNoteImage(NoteRestValue value) {
         return downNotes.get(value);
+    }
+
+    public static Image getSharpNoteImage(NoteRestValue value) {
+        return sharpNotes.get(value);
     }
 
     public static Image getRestImage(NoteRestValue value) {

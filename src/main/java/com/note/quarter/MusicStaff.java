@@ -14,7 +14,7 @@ public class MusicStaff {
     public final double GAP_BETWEEN_PITCHES;
     public final double NUMBER_OF_HIGHEST_NOTE_IN_SCALE = 13;
     public final NotePitch LOWEST_PITCH = new NotePitch(60);
-    public final double MEASURE_MAX_WIDTH = 210;
+    public final double MEASURE_MAX_WIDTH = 300;
 
     public final double CLEF_X_POSITION = 0;
     public final double METER_X_POSITION = 5;
@@ -22,7 +22,7 @@ public class MusicStaff {
     private double lowestPositionY;
     private double currentStaffPosition;
 
-    public final double MIN_X_POSITION = 65;
+    public final double MIN_X_POSITION = 80;
     public final double MAX_X_POSITION = ImageResource.getStaff().getWidth();
     public double currentXPosition = MIN_X_POSITION;
     public int remainingUnits = NoteRestValue.WHOLE.getRelativeValue();

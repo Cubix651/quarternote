@@ -40,4 +40,13 @@ public class NotePitch {
             return TONES_IN_SCALE * octave + (relCode + 1) / 2;
         }
     }
+
+    public boolean withSharp() {
+        int relCode = midiCode % SEMITONES_IN_SCALE;
+        if(relCode <= 4) {
+            return relCode % 2 == 1;
+        } else {
+            return relCode % 2 == 0;
+        }
+    }
 }

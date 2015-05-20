@@ -6,7 +6,10 @@ public class NoteNode extends NoteRestNode {
 
     public NoteNode(Note note) {
         noteRest = note;
-        mainImageView = new ImageView(ImageResource.getUpNoteImage(note.getValue()));
+        if(note.getPitch().withSharp())
+            mainImageView = new ImageView(ImageResource.getSharpNoteImage(note.getValue()));
+        else
+            mainImageView = new ImageView(ImageResource.getUpNoteImage(note.getValue()));
         init();
     }
 }
