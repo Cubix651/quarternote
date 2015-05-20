@@ -2,9 +2,6 @@ package com.note.quarter;
 
 import javafx.scene.control.TextField;
 
-/**
- * Created by stella on 16.05.15.
- */
 public class BPMTextField extends TextField {
     @Override
     public void replaceText(int start, int end, String t)

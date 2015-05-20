@@ -9,8 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
+import javax.sound.midi.Sequencer;
 
 public class MainForm extends Application {
 
@@ -30,22 +29,12 @@ public class MainForm extends Application {
             @Override
             public void handle(WindowEvent event) {
                 MainController controller = fxmlLoader.getController();
-                Metronome m = controller.getMetronomeScheduler().getMetronome();
-                if(m!=null) m.turnOff();
-                ExecutorService s = controller.getMetronomeScheduler().getExecutorService();
-                if(s!=null) {
-                    try {
-                        s.shutdown();
-                    } catch (SecurityException exc) {
-                        exc.printStackTrace();
-                    }
-                    try {
-                        s.awaitTermination(1, TimeUnit.DAYS);
-                    } catch (InterruptedException exc) {
-                       exc.printStackTrace();
-                    }
-                }
+                Sequencer sequencer = controller.getMetronomeScheduler().getSequencer();
+                if(sequencer!=null && sequencer.isOpen()) sequencer.close();
+
             }
+
+
         });
     }
 

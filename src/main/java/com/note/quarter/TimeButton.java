@@ -3,9 +3,6 @@ package com.note.quarter;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
-/**
- * Created by stella on 17.05.15.
- */
 public class TimeButton extends Button {
 
 

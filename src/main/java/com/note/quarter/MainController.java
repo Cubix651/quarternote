@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +42,11 @@ public class MainController implements Initializable {
             keyboardMapping.put(keyboardMappingSequence.charAt(i) + "", 60 + i);
         }
 
-        metronomeScheduler = new MetronomeScheduler();
+        try {
+            metronomeScheduler = new MetronomeScheduler();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
         musicSheet = new MusicSheet(canvas, canvasPane);
 
         try {
@@ -184,7 +189,13 @@ public class MainController implements Initializable {
         if(source.isSelected())
         {
             source.setText("Metronome On");
-            metronomeScheduler.metronomeOn();
+            try {
+                metronomeScheduler.metronomeOn();
+            } catch (MidiUnavailableException e) {
+                e.printStackTrace();
+            } catch (InvalidMidiDataException e) {
+                e.printStackTrace();
+            }
         }
         else
         {
