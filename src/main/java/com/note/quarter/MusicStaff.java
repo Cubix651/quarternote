@@ -2,8 +2,9 @@ package com.note.quarter;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+
+import java.util.LinkedList;
 
 import static java.lang.Math.round;
 
@@ -11,26 +12,25 @@ public class MusicStaff {
     public final double STAFF_HEIGHT;
     public final double GAP_BETWEEN_STAFFS;
     public final double GAP_BETWEEN_PITCHES;
-    public final double NOTEREST_HEIGHT = 50;
     public final double NUMBER_OF_HIGHEST_NOTE_IN_SCALE = 13;
     public final NotePitch LOWEST_PITCH = new NotePitch(60);
-    public final double NOTEREST_SHIFT = 6;
-    public final double MEASURE_WIDTH = 200;
+    public final double MEASURE_MAX_WIDTH = 210;
 
     public final double CLEF_X_POSITION = 0;
     public final double METER_X_POSITION = 5;
 
-    private double lowestPositionY; //C4??
+    private double lowestPositionY;
     private double currentStaffPosition;
 
     public final double MIN_X_POSITION = 65;
-    public final double MAX_X_POSITION = MIN_X_POSITION + 4 * MEASURE_WIDTH; //width
+    public final double MAX_X_POSITION = ImageResource.getStaff().getWidth();
     public double currentXPosition = MIN_X_POSITION;
-    public double currentRelativeXPosition = 0;
+    public int remainingUnits = NoteRestValue.WHOLE.getRelativeValue();
 
 
     private Canvas canvas;
     private Pane canvasPane;
+    private LinkedList<SheetItem> nodes = new LinkedList<>();
 
     public MusicStaff(Canvas canvas, Pane canvasPane)
     {
@@ -64,8 +64,6 @@ public class MusicStaff {
 
     public NotePitch computePitchFromYPosition(double y) {
         double relativeY = currentStaffPosition + lowestPositionY - y;
-        relativeY -= NOTEREST_HEIGHT / 2;
-        relativeY += NOTEREST_SHIFT;
         int n = (int) round(relativeY / GAP_BETWEEN_PITCHES);
         if (n < 0 || n > NUMBER_OF_HIGHEST_NOTE_IN_SCALE) return null;
         return new NotePitch(LOWEST_PITCH.getIndex() + n, false);
@@ -74,13 +72,11 @@ public class MusicStaff {
     public double computeYPositionFromPitch(NotePitch pitch) {
         double y = currentStaffPosition + lowestPositionY;
         y -= (pitch.getIndex() - LOWEST_PITCH.getIndex()) * GAP_BETWEEN_PITCHES;
-        y -= NOTEREST_HEIGHT;
-        y += NOTEREST_SHIFT;
         return y;
     }
 
     private boolean isNextMeasureInRowPossible() {
-        if(currentXPosition - currentRelativeXPosition + MEASURE_WIDTH <= MAX_X_POSITION)
+        if(currentXPosition + MEASURE_MAX_WIDTH <= MAX_X_POSITION)
             return true;
         return false;
     }
@@ -91,55 +87,69 @@ public class MusicStaff {
     }
 
     private boolean isBarLineNecessary() {
-        if(currentRelativeXPosition >= MEASURE_WIDTH)
-            return true;
-        return false;
+        return (remainingUnits == 0);
+    }
+
+    private void insertSheetItem(SheetItem item, double x, double y) {
+        item.setLayoutX(x);
+        item.setLayoutY(y);
+        canvasPane.getChildren().add(item);
+        nodes.add(item);
+        currentXPosition += item.getWidth();
     }
 
     private void insertBarLine() {
-        ImageView barLine = new ImageView(ImageResource.getBarLine());
-        barLine.setLayoutX(currentXPosition);
-        barLine.setLayoutY(currentStaffPosition);
-        canvasPane.getChildren().add(barLine);
-        currentRelativeXPosition = 0;
+        insertSheetItem(new BarLineNode(), currentXPosition, currentStaffPosition);
+        remainingUnits = NoteRestValue.WHOLE.getRelativeValue();
     }
 
-    private boolean enoughSpaceForNoteRest(double noteRestWidth) {
-        System.out.println(currentRelativeXPosition + " " + noteRestWidth + " " + (currentRelativeXPosition + noteRestWidth <= MEASURE_WIDTH));
-        if(currentRelativeXPosition + noteRestWidth <= MEASURE_WIDTH)
-            return true;
-        return false;
+    private boolean enoughUnitsForNoteRest(NoteRestValue value) {
+        return value.getRelativeValue() <= remainingUnits;
     }
 
     public void drawNoteRest(NoteRest noteRest) {
-        ImageView imageView;
-        if (noteRest.isNote())
-            imageView = new ImageView(ImageResource.getUpNoteImage(noteRest.getValue()));
-        else
-            imageView = new ImageView(ImageResource.getRestImage(noteRest.getValue()));
+        if(!enoughUnitsForNoteRest(noteRest.getValue()))
+            return;
 
-        double noteRestWidth = MEASURE_WIDTH * noteRest.getValue().getRelativeValue();
-
-        if(!enoughSpaceForNoteRest(noteRestWidth)) return;
-
+        NoteRestNode noteRestNode;
         double y;
         if (noteRest.isNote()) {
             Note note = (Note) noteRest;
-            y = computeYPositionFromPitch(note.getPitch());
+            noteRestNode = new NoteNode(note);
+            y = computeYPositionFromPitch(note.getPitch()) - noteRestNode.getHeight() / 2;
         } else {
+            Rest rest = (Rest) noteRest;
+            noteRestNode = new RestNode(rest);
             y = currentStaffPosition;
         }
 
-        imageView.setLayoutY(y);
-        imageView.setLayoutX(currentXPosition);
-        currentXPosition += noteRestWidth;
-        currentRelativeXPosition += noteRestWidth;
-        canvasPane.getChildren().add(imageView);
+        insertSheetItem(noteRestNode, currentXPosition, y);
+        remainingUnits -= noteRest.getValue().getRelativeValue();
 
-        if(isBarLineNecessary())
+        if(isBarLineNecessary()) {
             insertBarLine();
+            if(!isNextMeasureInRowPossible())
+                gotoNextRow();
+        }
+    }
 
-        if(currentRelativeXPosition == 0 && !isNextMeasureInRowPossible())
-            gotoNextRow();
+    private void eraseLastSheetItem() {
+        SheetItem item = nodes.getLast();
+        canvasPane.getChildren().remove(item);
+        nodes.removeLast();
+        currentXPosition -= item.getWidth();
+        if(item instanceof NoteRestNode) {
+            remainingUnits += ((NoteRestNode) item).getNoteRest().getValue().getRelativeValue();
+        }
+        else if(item instanceof BarLineNode) {
+            remainingUnits = 0;
+        }
+    }
+
+    public void eraseLastNoteRest() {
+        while(!nodes.isEmpty() && nodes.getLast() instanceof BarLineNode)
+            eraseLastSheetItem();
+        if(!nodes.isEmpty())
+            eraseLastSheetItem();
     }
 }
