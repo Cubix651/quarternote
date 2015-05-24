@@ -3,14 +3,23 @@ package com.note.quarter;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 
+import javax.xml.bind.JAXBException;
 
 public class MusicSheet {
     private MusicStaff musicStaff;
     private boolean isRecording;
 
+    public void save() throws JAXBException {
+        musicStaff.saveXML();
+    }
+
     public MusicSheet(Canvas canvas, Pane canvasPane) {
         musicStaff = new MusicStaff(canvas, canvasPane);
 
+    }
+
+    public MusicStaff getMusicStaff() {
+        return musicStaff;
     }
 
     public void addNoteRest(NoteRest noteRest) {
@@ -40,4 +49,5 @@ public class MusicSheet {
     public void deleteLastNoteRest() {
         musicStaff.eraseLastNoteRest();
     }
+
 }

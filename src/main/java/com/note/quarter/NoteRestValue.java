@@ -1,5 +1,6 @@
 package com.note.quarter;
 
+
 public enum NoteRestValue {
     WHOLE(16),
     HALF(8),

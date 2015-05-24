@@ -1,22 +1,29 @@
 package com.note.quarter;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -216,5 +223,33 @@ public class MainController implements Initializable {
         ToggleButton source = (ToggleButton)event.getSource();
         musicSheet.setRecording(source.isSelected());
 
+    }
+
+    public void saveProjectHandler(ActionEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
+        fileChooser.setInitialFileName("MyScore");
+        fileChooser.getExtensionFilters().add(filter);
+        Window window = canvasPane.getScene().getWindow();
+        File f =fileChooser.showSaveDialog(window);
+
+        if(f!=null) {
+            f = new File(f.getAbsolutePath()+'.'+filter.getExtensions().get(0).split("\\.")[1]);
+            if(!f.exists()) {
+                MusicXMLBuilder builder = new MusicXMLBuilder();
+                builder.save(musicSheet.getMusicStaff().getNodes(), f);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("File already exists. Do you want to override it?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get().equals(ButtonType.OK)){
+                    MusicXMLBuilder builder = new MusicXMLBuilder();
+                    builder.save(musicSheet.getMusicStaff().getNodes(), f);
+                }
+
+            }
+        }
     }
 }

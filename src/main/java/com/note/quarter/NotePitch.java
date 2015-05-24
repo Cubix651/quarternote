@@ -1,7 +1,15 @@
 package com.note.quarter;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NotePitch {
     private int midiCode;
+    private String accidental;
+
+
+    public static final ArrayList<String> indexToStep = new ArrayList<String>(Arrays.asList("C","D","E","F","G","A","B"));
     public static final int SEMITONES_IN_SCALE = 12;
     public static final int TONES_IN_SCALE = 7;
 
@@ -10,16 +18,20 @@ public class NotePitch {
     }
 
     public NotePitch(int index, boolean withSharp) {
+        System.out.println(index);
         int octave = index / TONES_IN_SCALE;
         index %= TONES_IN_SCALE;
+        System.out.println("index " + index);
         if(index <= 2) {
             midiCode = 2*index;
         }
         else {
             midiCode = 2*index - 1;
         }
-        if(withSharp)
+        if(withSharp) {
             midiCode += 1;
+            accidental = "sharp";
+        }
         midiCode += SEMITONES_IN_SCALE * octave;
     }
 
@@ -29,6 +41,13 @@ public class NotePitch {
 
     public void setMidiCode(int midiCode) {
         this.midiCode = midiCode;
+    }
+
+    public String getStep()
+    {
+        int i =getIndex();
+        i = i % TONES_IN_SCALE;
+        return indexToStep.get(i);
     }
 
     public int getIndex() {
@@ -41,6 +60,11 @@ public class NotePitch {
         }
     }
 
+    public int getOctave(){
+        return midiCode/SEMITONES_IN_SCALE - 1;
+    }
+
+
     public boolean withSharp() {
         int relCode = midiCode % SEMITONES_IN_SCALE;
         if(relCode <= 4) {
@@ -48,5 +72,14 @@ public class NotePitch {
         } else {
             return relCode % 2 == 0;
         }
+    }
+
+    public String getAccidental() {
+        return accidental;
+    }
+
+    public void setAccidental(String accidental) {
+        if(accidental.equals("flat") || accidental.equals("sharp") || accidental.equals("natural"))
+        this.accidental = accidental;
     }
 }
