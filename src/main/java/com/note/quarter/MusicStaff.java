@@ -1,14 +1,9 @@
 package com.note.quarter;
 
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.util.LinkedList;
 
 import static java.lang.Math.round;
@@ -170,12 +165,4 @@ public class MusicStaff {
             eraseLastSheetItem();
     }
 
-    public void saveXML() throws JAXBException {
-        Node node = new Button("HELLO");
-        JAXBContext context = JAXBContext.newInstance(Node.class);
-        System.out.println(context);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.marshal(node,System.out);
-    }
 }

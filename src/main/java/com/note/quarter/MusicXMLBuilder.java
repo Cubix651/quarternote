@@ -63,6 +63,14 @@ public class MusicXMLBuilder {
         return doc;
     }
 
+    private void setDivision(Document doc, Element attributes)
+    {
+        Element divisions = doc.createElement("divisions");
+        Text divisionsText = doc.createTextNode("2");
+        divisions.appendChild(divisionsText);
+        attributes.appendChild(divisions);
+    }
+
     private void setKey(Document doc, Element attributes)
     {
         Element key = doc.createElement("key");
@@ -108,6 +116,7 @@ public class MusicXMLBuilder {
     private void setAttributes(Document doc, Element measure)
     {
         Element attributes = doc.createElement("attributes");
+        setDivision(doc,attributes);
         setKey(doc,attributes);
         setTime(doc,attributes);
         setClef(doc,attributes);
@@ -191,6 +200,7 @@ public class MusicXMLBuilder {
 
         if(n.getPitch().getAccidental()!=null)
         {
+
             Element accidental = doc.createElement("accidental");
             Text accidentalText = doc.createTextNode(n.getPitch().getAccidental());
             accidental.appendChild(accidentalText);

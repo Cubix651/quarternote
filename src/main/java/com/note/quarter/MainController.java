@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
@@ -15,9 +14,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import org.xml.sax.SAXException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +42,7 @@ public class MainController implements Initializable {
     private Map<String, Integer> keyboardMapping = new HashMap<>();
 
     String keyboardMappingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,6 +69,14 @@ public class MainController implements Initializable {
                 pianoKeys.put(Integer.parseInt(node.getId().substring(3)), (TimeButton) node);
             }
         }
+    }
+
+    private void setUpNewProject()
+    {
+        if (canvasPane.getChildren().size() > 1) {
+            canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
+        }
+        musicSheet = new MusicSheet(canvas, canvasPane);
     }
 
     private void pressPianoKey(int noteNumber) {
@@ -163,11 +173,8 @@ public class MainController implements Initializable {
         event.consume();
     }
 
-    public void setUpNewProject(Event event) throws IOException {
-        if (canvasPane.getChildren().size() > 1) {
-            canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
-        }
-        musicSheet = new MusicSheet(canvas, canvasPane);
+    public void setUpNewProjectHandler(Event event) throws IOException {
+       setUpNewProject();
         event.consume();
     }
 
@@ -241,14 +248,47 @@ public class MainController implements Initializable {
                 builder.save(musicSheet.getMusicStaff().getNodes(), f);
             }
             else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("File already exists. Do you want to override it?");
-                Optional<ButtonType> result = alert.showAndWait();
+
+                Optional<ButtonType> result = Alerts.raiseConfirmationAlert("File already exists. Do you want to override it?",null).showAndWait();
                 if(result.get().equals(ButtonType.OK)){
                     MusicXMLBuilder builder = new MusicXMLBuilder();
                     builder.save(musicSheet.getMusicStaff().getNodes(), f);
                 }
 
+            }
+        }
+    }
+
+    public void openProjectHandler(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
+        fileChooser.getExtensionFilters().add(filter);
+        Window window = canvasPane.getScene().getWindow();
+        File f = fileChooser.showOpenDialog(window);
+        if(f!=null)
+        {
+            if(!musicSheet.getMusicStaff().getNodes().isEmpty())
+            {
+                Optional<ButtonType> result = Alerts.raiseConfirmOpeningAlert().showAndWait();
+                if(result.get().equals(new ButtonType("NEW PROJECT"))){
+                    setUpNewProject();
+                }
+            }
+            MusicXMLParser parser = new MusicXMLParser();
+            try {
+                parser.open(f,musicSheet);
+            } catch (ParserConfigurationException e) {
+                Alerts.raiseErrorAlert(e,"Parser configuration exception").showAndWait();
+                e.printStackTrace();
+            } catch (IOException e) {
+                Alerts.raiseErrorAlert(e,"IO exception - check if your file is valid").showAndWait();
+                e.printStackTrace();
+            } catch (SAXException e) {
+                Alerts.raiseErrorAlert(e,"SAX parsing exception").showAndWait();
+                e.printStackTrace();
+            } catch (UnsupportedNotationException e) {
+                Alerts.raiseErrorAlert(e,"Unsupported or invalid music notation").showAndWait();
+                e.printStackTrace();
             }
         }
     }

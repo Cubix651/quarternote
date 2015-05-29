@@ -224,8 +224,9 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#setUpNewProject" text="New Project" />
+                                <MenuItem mnemonicParsing="false" onAction="#setUpNewProjectHandler" text="New Project" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveProjectHandler" text="Save"/>
+                                <MenuItem mnemonicParsing="false" onAction="#openProjectHandler" text="Open"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
