@@ -270,18 +270,43 @@ public class MainController implements Initializable {
             if(!musicSheet.getMusicStaff().getNodes().isEmpty())
             {
                 Optional<ButtonType> result = Alerts.raiseConfirmOpeningAlert().showAndWait();
-                if(result.get().equals(new ButtonType("NEW PROJECT"))){
+                if(result.get().equals(new ButtonType("NEW"))){
                     setUpNewProject();
                 }
             }
-            MusicXMLParser parser = new MusicXMLParser();
+
+            MusicXMLPareserSAX pareserSAX = new MusicXMLPareserSAX(musicSheet);
+            try {
+                pareserSAX.open(f);
+            } catch (ParserConfigurationException e) {
+                Alerts.raiseErrorAlert(e,"Parser configuration exception").showAndWait();
+                e.printStackTrace();
+            }
+            catch (SAXException e) {
+                Exception exception = e.getException();
+
+                if(exception == null){ Alerts.raiseErrorAlert(e,"SAX Exception").showAndWait();}
+                else if(exception instanceof UnsupportedNotationException){
+                    Alerts.raiseErrorAlert(exception,"Cannot resolve notation").showAndWait() ;
+                }
+                else if(exception instanceof IllegalDocumentTypeException){
+                    System.out.println(exception);
+                    Alerts.raiseErrorAlert(exception,"Invalid document type").showAndWait();
+                }
+                e.printStackTrace();
+            } catch (IOException e) {
+                Alerts.raiseErrorAlert(e,"IO exception").showAndWait();
+                e.printStackTrace();
+            }
+
+         /*   MusicXMLParserDOM parser = new MusicXMLParserDOM();
             try {
                 parser.open(f,musicSheet);
             } catch (ParserConfigurationException e) {
                 Alerts.raiseErrorAlert(e,"Parser configuration exception").showAndWait();
                 e.printStackTrace();
             } catch (IOException e) {
-                Alerts.raiseErrorAlert(e,"IO exception - check if your file is valid").showAndWait();
+                Alerts.raiseErrorAlert(e,"IO exception").showAndWait();
                 e.printStackTrace();
             } catch (SAXException e) {
                 Alerts.raiseErrorAlert(e,"SAX parsing exception").showAndWait();
@@ -289,7 +314,10 @@ public class MainController implements Initializable {
             } catch (UnsupportedNotationException e) {
                 Alerts.raiseErrorAlert(e,"Unsupported or invalid music notation").showAndWait();
                 e.printStackTrace();
-            }
+            } catch (IllegalDocumentTypeException e) {
+                Alerts.raiseErrorAlert(e,"Wrong or not specified document type").showAndWait();
+                e.printStackTrace();
+            }*/
         }
     }
 }

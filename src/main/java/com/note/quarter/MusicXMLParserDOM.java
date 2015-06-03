@@ -12,12 +12,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-public class MusicXMLParser {
+public class MusicXMLParserDOM {
 
 
     private int division;
 
-    public void open(File f, MusicSheet musicSheet) throws ParserConfigurationException, IOException, SAXException, UnsupportedNotationException {
+    public void open(File f, MusicSheet musicSheet) throws ParserConfigurationException, IOException, SAXException, UnsupportedNotationException, IllegalDocumentTypeException {
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -28,7 +28,7 @@ public class MusicXMLParser {
         DocumentType check = builder.getDOMImplementation().createDocumentType("score-partwise",
                 "-//Recordare//DTD MusicXML 3.0 Partwise//EN",
                 "http://www.musicxml.org/dtds/partwise.dtd");
-        if(documentType==null || !documentType.getName().equals(check.getName()) ) {throw new IOException();}
+        if(documentType==null || !documentType.getName().equals(check.getName()) ) {throw new IllegalDocumentTypeException();}
         doc.getDocumentElement().normalize();
         readPart(doc,musicSheet);
 
@@ -201,7 +201,6 @@ public class MusicXMLParser {
             readNotes(measure,musicSheet);
         }
     }
-
 
 
 

@@ -8,6 +8,7 @@ public class Note extends NoteRest {
         setValue(value);
     }
 
+
     public NotePitch getPitch() {
         return pitch;
     }

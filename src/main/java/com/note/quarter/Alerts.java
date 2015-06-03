@@ -10,7 +10,7 @@ public class Alerts{
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText("Error occurred: ");
-        alert.setContentText(e +" " +additionalInformation);
+        alert.setContentText(e.getClass().getSimpleName() +"\n" +additionalInformation);
         return alert;
     }
     public static Alert raiseConfirmationAlert(String header, String content)
@@ -22,10 +22,10 @@ public class Alerts{
     }
     public static Alert raiseConfirmOpeningAlert()
     {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to start a new project or append new file to the existing one?",ButtonType.CANCEL);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"You can start a new project or append the file",ButtonType.CANCEL);
         alert.getButtonTypes().add(new ButtonType("APPEND"));
-        alert.getButtonTypes().add(new ButtonType("NEW PROJECT"));
-        alert.setHeaderText("You have unsaved changes");
+        alert.getButtonTypes().add(new ButtonType("NEW"));
+        alert.setHeaderText("Current project is not empty");
         return alert;
     }
 
