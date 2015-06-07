@@ -2,6 +2,7 @@ package com.note.quarter;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.LinkedList;
@@ -114,6 +115,50 @@ public class MusicStaff {
         return value.getRelativeValue() <= remainingUnits;
     }
 
+    private boolean isAdditionalLineNecessary(Note note)
+    {
+        return note.getPitch().getIndex()>46 || note.getPitch().getIndex()<36;
+    }
+
+    private void setLayoutDifference(Note note, ImageView view)
+    {
+        if(note.getValue().equals(NoteRestValue.WHOLE)) view.setLayoutY(7.5);
+        if(note.getValue().equals(NoteRestValue.EIGHTH)) view.setLayoutX(11);
+        else view.setLayoutX(15);
+    }
+
+    private void addAdditionalLine(NoteRestNode noteRestNode, Note note, int index)
+    {
+        int i=0;
+        while (index>46) {
+            if (index % 2 == 0) {
+                index = index - 1;
+                i++;
+            }
+            ImageView view = new ImageView(ImageResource.getAdditional(note.getValue()));
+            if(note.getPitch().withSharp()) setLayoutDifference(note,view);
+            noteRestNode.getChildren().add(view);
+            view.setLayoutY(i * 6.25);
+            i++;
+            index--;
+        }
+
+        while (index<36) {
+            if(index % 2 == 0) {
+                index = index+1;
+                i++;
+            }
+            ImageView view = new ImageView(ImageResource.getAdditional(note.getValue()));
+            if(note.getPitch().withSharp()) if(note.getPitch().withSharp()) setLayoutDifference(note,view);
+            noteRestNode.getChildren().add(view);
+            view.setLayoutY(i*6.25);
+            i++;
+            index++;
+
+        }
+
+    }
+
     public void drawNoteRest(NoteRest noteRest) {
         if(!enoughUnitsForNoteRest(noteRest.getValue()))
             return;
@@ -123,6 +168,8 @@ public class MusicStaff {
         if (noteRest.isNote()) {
             Note note = (Note) noteRest;
             noteRestNode = new NoteNode(note);
+            if(isAdditionalLineNecessary(note))
+                addAdditionalLine(noteRestNode,note,note.getPitch().getIndex());
             y = computeYPositionFromPitch(note.getPitch()) - noteRestNode.getHeight() / 2;
         } else {
             Rest rest = (Rest) noteRest;
@@ -130,7 +177,7 @@ public class MusicStaff {
             y = currentStaffPosition;
         }
 
-        /****************HERE*****************/
+
         insertSheetItem(noteRestNode, currentXPosition, y);
         remainingUnits -= noteRest.getValue().getRelativeValue();
 

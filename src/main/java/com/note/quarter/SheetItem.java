@@ -20,4 +20,10 @@ public abstract class SheetItem extends Group {
     public double getHeight() {
         return mainImageView.getImage().getHeight();
     }
+
+    public double getX() {return mainImageView.getX();}
+
+    public double getY() {return mainImageView.getY();
+
+    }
 }
