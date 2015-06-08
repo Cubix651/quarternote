@@ -5,7 +5,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
@@ -30,9 +29,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     @FXML private Pane pianoPane;
-    @FXML private Canvas canvas;
-    @FXML private Pane canvasPane;
+    @FXML private Pane sheetPane;
     @FXML private ToggleButton metronomeButton;
+    @FXML private ToggleButton recordButton;
     private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
     private MusicSheet musicSheet;
@@ -56,7 +55,7 @@ public class MainController implements Initializable {
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
-        musicSheet = new MusicSheet(canvas, canvasPane);
+        musicSheet = new MusicSheet(sheetPane);
 
         try {
             melodyPlayer = new MelodyPlayer();
@@ -73,10 +72,9 @@ public class MainController implements Initializable {
 
     private void setUpNewProject()
     {
-        if (canvasPane.getChildren().size() > 1) {
-            canvasPane.getChildren().remove(1, canvasPane.getChildren().size());
-        }
-        musicSheet = new MusicSheet(canvas, canvasPane);
+        recordButton.setSelected(false);
+        sheetPane.getChildren().clear();
+        musicSheet = new MusicSheet(sheetPane);
     }
 
     private void pressPianoKey(int noteNumber) {
@@ -238,7 +236,7 @@ public class MainController implements Initializable {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
         fileChooser.setInitialFileName("MyScore");
         fileChooser.getExtensionFilters().add(filter);
-        Window window = canvasPane.getScene().getWindow();
+        Window window = sheetPane.getScene().getWindow();
         File f =fileChooser.showSaveDialog(window);
 
         if(f!=null) {
@@ -263,7 +261,7 @@ public class MainController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
         fileChooser.getExtensionFilters().add(filter);
-        Window window = canvasPane.getScene().getWindow();
+        Window window = sheetPane.getScene().getWindow();
         File f = fileChooser.showOpenDialog(window);
         if(f!=null)
         {

@@ -1,4 +1,3 @@
-
 .pressedKey{
     -fx-background-color: linear-gradient(to right, #7CB9E8 0%, #007FFF 100%);
     -fx-border-color: gray;
@@ -25,3 +24,7 @@
     -fx-border-color: gray;
 }
 
+.musicSheet{
+    -fx-background-color: white;
+    -fx-border-color: black;
+}

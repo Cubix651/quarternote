@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.note.quarter.*?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController" stylesheets="@keyStyles.css" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController" stylesheets="@styles.css" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
@@ -39,16 +38,16 @@
          <items>
             <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" orientation="VERTICAL" prefWidth="600.0">
                <items>
-                  <ScrollPane minHeight="0.0" minWidth="0.0" GridPane.halignment="CENTER">
+                  <ScrollPane fitToWidth="true">
                      <content>
-                        <Pane fx:id="canvasPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefHeight="1600.0" prefWidth="870.0" GridPane.halignment="CENTER">
-                           <children>
-                              <Canvas fx:id="canvas" height="1600" width="870" GridPane.halignment="CENTER" />
-                           </children>
-                        </Pane>
+                         <StackPane alignment="TOP_CENTER">
+                             <children>
+                                <Pane fx:id="sheetPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefWidth="870.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="musicSheet"/>
+                             </children>
+                         </StackPane>
                      </content>
                   </ScrollPane>
-                  <Pane fx:id="pianoPane" maxHeight="200.0" prefHeight="200.0" SplitPane.resizableWithParent="false">
+                  <Pane fx:id="pianoPane" maxHeight="200.0" prefHeight="200.0" prefWidth="700.0" maxWidth="-Infinity" SplitPane.resizableWithParent="false">
                       <children>
                           <TimeButton fx:id="key60" contentDisplay="GRAPHIC_ONLY" layoutX="0.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
                           <TimeButton fx:id="key62" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
@@ -95,7 +94,7 @@
                                  </graphic>
                               </ToggleButton>
                               <Label alignment="CENTER" prefHeight="25.0" prefWidth="130.0" text="Record" />
-                              <ToggleButton onMouseClicked="#recordClickedHandler" prefHeight="25.0" prefWidth="120.0">
+                              <ToggleButton fx:id="recordButton" onMouseClicked="#recordClickedHandler" prefHeight="25.0" prefWidth="120.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -105,7 +104,7 @@
                                  </graphic>
                               </ToggleButton>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
-                              <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
+                              <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
                               <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#metronomeClickedHandler" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" />
                            </children>
