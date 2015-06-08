@@ -24,12 +24,12 @@
                 </Menu>
                 <Menu text="Edit">
                     <items>
-                        <MenuItem text="Delete" />
+                        <MenuItem text="Delete last" onAction="#deleteLastHandler"/>
                     </items>
                 </Menu>
                 <Menu text="Help">
                     <items>
-                        <MenuItem text="About" />
+                        <MenuItem text="About" onAction="#aboutHandler"/>
                     </items>
                 </Menu>
             </menus>

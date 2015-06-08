@@ -1,15 +1,19 @@
 package com.note.quarter;
 
-import com.note.quarter.controls.*;
-import com.note.quarter.drawing.*;
+import com.note.quarter.controls.NumericTextField;
+import com.note.quarter.controls.TimeButton;
+import com.note.quarter.drawing.ImageResource;
+import com.note.quarter.drawing.MusicSheet;
 import com.note.quarter.noterest.*;
 import com.note.quarter.opensave.*;
-import com.note.quarter.sound.*;
+import com.note.quarter.sound.MelodyPlayer;
+import com.note.quarter.sound.MetronomeScheduler;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
@@ -293,5 +297,19 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void deleteLastHandler(Event event) {
+        musicSheet.deleteLastNoteRest();
+    }
+
+    public void aboutHandler(Event event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("QuarterNote 1.0");
+        alert.setContentText("Project for programming classes\n\nAuthors:\nAleksandra Nowak and Jakub Cisło" +
+                "\n\nRelease date:\nJune of 2015\n\nhttps://bitbucket.org/quarternote/quarternote");
+
+        alert.showAndWait();
     }
 }

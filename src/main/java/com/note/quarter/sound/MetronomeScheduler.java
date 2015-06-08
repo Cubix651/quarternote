@@ -64,7 +64,7 @@ public class MetronomeScheduler implements MetaEventListener {
         return round(BPM * DEFAULT_BPM_FREQUENCY / DEFAULT_BPM);
     }
 
-    public long BPMtoMiliSeconds(int BPM) {
+    public long BPMtoMilliSeconds(int BPM) {
         return round(DEFAULT_BPM_TO_MILLISECONDS / (1.0 * BPM * DEFAULT_BPM_FREQUENCY / DEFAULT_BPM));
     }
 
@@ -74,7 +74,7 @@ public class MetronomeScheduler implements MetaEventListener {
 
     public void setBPM(int BPM) {
         if (sequencer.isOpen()) sequencer.close();
-        bpmToMilliseconds = BPMtoMiliSeconds(BPM);
+        bpmToMilliseconds = BPMtoMilliSeconds(BPM);
         shortestNoteDuration = bpmToMilliseconds / 2;
         this.bpm = BPM;
     }
@@ -133,7 +133,6 @@ public class MetronomeScheduler implements MetaEventListener {
     @Override
     public void meta(MetaMessage meta) {
         if (meta.getType() == END_OF_FILE) {
-            System.out.println("here");
             sequencer.setTickPosition(1);
             sequencer.setTempoInBPM(bpm);
             sequencer.start();
