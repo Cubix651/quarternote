@@ -1,5 +1,8 @@
-package com.note.quarter;
+package com.note.quarter.drawing;
 
+import com.note.quarter.noterest.Note;
+import com.note.quarter.noterest.NotePitch;
+import com.note.quarter.noterest.NoteRest;
 import javafx.scene.layout.Pane;
 
 public class MusicSheet {

@@ -1,4 +1,6 @@
-package com.note.quarter;
+package com.note.quarter.drawing;
+
+import com.note.quarter.noterest.NoteRest;
 
 public abstract class NoteRestNode extends SheetItem {
 

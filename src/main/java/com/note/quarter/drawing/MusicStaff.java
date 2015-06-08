@@ -1,5 +1,6 @@
-package com.note.quarter;
+package com.note.quarter.drawing;
 
+import com.note.quarter.noterest.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 

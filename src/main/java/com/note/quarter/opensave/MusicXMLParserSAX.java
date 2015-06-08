@@ -1,6 +1,7 @@
-package com.note.quarter;
+package com.note.quarter.opensave;
 
 
+import com.note.quarter.drawing.MusicSheet;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -9,11 +10,11 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 
-public class MusicXMLPareserSAX {
+public class MusicXMLParserSAX {
 
     private MusicSheet musicSheet;
 
-    public MusicXMLPareserSAX(MusicSheet musicSheet)
+    public MusicXMLParserSAX(MusicSheet musicSheet)
     {
         this.musicSheet = musicSheet;
     }

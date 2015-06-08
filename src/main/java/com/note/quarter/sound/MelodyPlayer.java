@@ -1,4 +1,4 @@
-package com.note.quarter;
+package com.note.quarter.sound;
 
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;

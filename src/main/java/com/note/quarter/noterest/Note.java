@@ -1,4 +1,4 @@
-package com.note.quarter;
+package com.note.quarter.noterest;
 
 public class Note extends NoteRest {
     private NotePitch pitch;
@@ -7,7 +7,6 @@ public class Note extends NoteRest {
         this.pitch = pitch;
         setValue(value);
     }
-
 
     public NotePitch getPitch() {
         return pitch;

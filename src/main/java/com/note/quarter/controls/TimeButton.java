@@ -1,4 +1,4 @@
-package com.note.quarter;
+package com.note.quarter.controls;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package com.note.quarter;
+package com.note.quarter.opensave;
 
 public class UnsupportedNotationException extends Exception {
 
