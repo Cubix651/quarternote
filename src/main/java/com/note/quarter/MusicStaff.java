@@ -1,7 +1,5 @@
 package com.note.quarter;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -31,8 +29,7 @@ public class MusicStaff {
     public int remainingUnits = NoteRestValue.WHOLE.getRelativeValue();
 
 
-    private Canvas canvas;
-    private Pane canvasPane;
+    private Pane sheetPane;
 
     private LinkedList<SheetItem> nodes = new LinkedList<>();
 
@@ -40,8 +37,9 @@ public class MusicStaff {
         return nodes;
     }
 
-    public MusicStaff(Canvas canvas, Pane canvasPane)
+    public MusicStaff(Pane sheetPane)
     {
+        this.sheetPane = sheetPane;
         STAFF_HEIGHT = ImageResource.getStaff().getHeight();
         GAP_BETWEEN_STAFFS = STAFF_HEIGHT;
         GAP_BETWEEN_PITCHES = STAFF_HEIGHT/8;
@@ -49,25 +47,24 @@ public class MusicStaff {
         lowestPositionY = STAFF_HEIGHT + 2 * GAP_BETWEEN_PITCHES;
 
         currentStaffPosition = GAP_BETWEEN_STAFFS;
-        drawStaff(canvas);
-
-        this.canvas = canvas;
-        this.canvasPane = canvasPane;
+        drawNextStaff();
     }
 
-    public void drawStaff(Canvas canvas)
+    public void drawNextStaff()
     {
-        double sheetHeight = canvas.getHeight();
-        double y = GAP_BETWEEN_STAFFS;
-        while(y+STAFF_HEIGHT+ GAP_BETWEEN_STAFFS <sheetHeight)
-        {
-            canvas.getGraphicsContext2D().drawImage(ImageResource.getStaff(),0,y);
-            Image clef = ImageResource.getClef();
-            canvas.getGraphicsContext2D().drawImage(clef, CLEF_X_POSITION, y - (clef.getHeight() - STAFF_HEIGHT) / 2);
-            Image meter = ImageResource.getMeter();
-            canvas.getGraphicsContext2D().drawImage(meter, METER_X_POSITION,y - (meter.getHeight() - STAFF_HEIGHT) / 2);
-            y += GAP_BETWEEN_STAFFS + STAFF_HEIGHT;
-        }
+        ImageView staff = new ImageView(ImageResource.getStaff());
+        staff.setLayoutY(currentStaffPosition);
+        sheetPane.getChildren().add(staff);
+
+        ImageView clef = new ImageView(ImageResource.getClef());
+        clef.setLayoutX(CLEF_X_POSITION);
+        clef.setLayoutY(currentStaffPosition - (ImageResource.getClef().getHeight() - STAFF_HEIGHT) / 2);
+        sheetPane.getChildren().add(clef);
+
+        ImageView meter = new ImageView(ImageResource.getMeter());
+        meter.setLayoutX(METER_X_POSITION);
+        meter.setLayoutY(currentStaffPosition - (ImageResource.getMeter().getHeight() - STAFF_HEIGHT) / 2);
+        sheetPane.getChildren().add(meter);
     }
 
     public NotePitch computePitchFromYPosition(double y) {
@@ -92,6 +89,7 @@ public class MusicStaff {
     private void gotoNextRow() {
         currentXPosition = MIN_X_POSITION;
         currentStaffPosition += STAFF_HEIGHT + GAP_BETWEEN_STAFFS;
+        drawNextStaff();
     }
 
     private boolean isBarLineNecessary() {
@@ -101,7 +99,7 @@ public class MusicStaff {
     private void insertSheetItem(SheetItem item, double x, double y) {
         item.setLayoutX(x);
         item.setLayoutY(y);
-        canvasPane.getChildren().add(item);
+        sheetPane.getChildren().add(item);
         nodes.add(item);
         currentXPosition += item.getWidth();
     }
@@ -190,7 +188,7 @@ public class MusicStaff {
 
     private void eraseLastSheetItem() {
         SheetItem item = nodes.getLast();
-        canvasPane.getChildren().remove(item);
+        sheetPane.getChildren().remove(item);
         nodes.removeLast();
         currentXPosition -= item.getWidth();
         if(item instanceof NoteRestNode) {

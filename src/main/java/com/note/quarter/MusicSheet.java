@@ -1,14 +1,13 @@
 package com.note.quarter;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 
 public class MusicSheet {
     private MusicStaff musicStaff;
     private boolean isRecording;
 
-    public MusicSheet(Canvas canvas, Pane canvasPane) {
-        musicStaff = new MusicStaff(canvas, canvasPane);
+    public MusicSheet(Pane sheetPane) {
+        musicStaff = new MusicStaff(sheetPane);
 
     }
 

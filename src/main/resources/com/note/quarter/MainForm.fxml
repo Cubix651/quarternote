@@ -1,277 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
+<?import com.note.quarter.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import com.note.quarter.BPMTextField?>
-<?import com.note.quarter.TimeButton?>
-
-
-        <GridPane alignment="CENTER"  gridLinesVisible="true" GridPane.fillHeight="true" GridPane.fillWidth="true" hgap="10" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler" prefHeight="800" prefWidth="1100.0" stylesheets="@keyStyles.css" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="900.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="195.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints prefHeight="560.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="210.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <ScrollPane GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="1">
-                    <content>
-                        <Pane fx:id="canvasPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefHeight="1600.0" prefWidth="870.0">
-                            <children>
-                                <Canvas fx:id="canvas" height="1600" width="870" />
-                            </children>
-                        </Pane>
-                    </content>
-                </ScrollPane>
-                <GridPane GridPane.columnIndex="1" GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="65.0" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="65.0" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="65.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="ALWAYS" />
-                    </rowConstraints>
-                    <children>
-                        <Button minHeight="-Infinity" maxHeight="Infinity" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" GridPane.columnIndex="1" GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="4"/>
-                        <Button fx:id="quarter_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/up/quarter.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button fx:id="eighth_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="1">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/up/eighth.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button fx:id="half_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/up/half.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button fx:id="quarter_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0"  prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/down/quarter.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-
-                        <Button fx:id="eighth_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.rowIndex="2">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/down/eighth.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button fx:id="whole_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.rowIndex="3">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/rests/whole.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button fx:id="whole_note" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/up/whole.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-
-                        <Button fx:id="half_notedown" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/notes/down/half.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button fx:id="quarter_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler"  onMouseClicked="#restClickedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/rests/quarter.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button fx:id="half_rest" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/rests/half.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button fx:id="SIGN_UP_SHARP" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler"  GridPane.columnIndex="2" GridPane.rowIndex="3">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/signs/sharp.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button fx:id="SIGN_UP_FLAT" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="4">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/signs/flat.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="5" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="6" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"  prefHeight="70.0" prefWidth="65.0" GridPane.rowIndex="7">
-
-                        </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <Button  fx:id="eighth_rest" contentDisplay="GRAPHIC_ONLY" layoutX="72.0" layoutY="284.0" mnemonicParsing="false" prefHeight="70" prefWidth="65.0" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <graphic>
-                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"  >
-                                    <image>
-                                        <Image url="@images/rests/eighth.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic></Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" layoutX="135.0" layoutY="353.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    </children>
-                </GridPane>
-                <SplitPane orientation="VERTICAL" prefHeight="153.0" prefWidth="947.0" GridPane.rowIndex="2">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.note.quarter.MainController" stylesheets="@styles.css" onKeyPressed="#keyPressedHandler" onKeyReleased="#keyReleasedHandler">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+        <MenuBar>
+            <menus>
+                <Menu text="File">
                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                            <children>
-                                <Pane fx:id="pianoPane" layoutX="1.0" layoutY="2.0" prefHeight="206.0" prefWidth="744.0">
-                                    <children>
-                                        <TimeButton fx:id="key60" contentDisplay="GRAPHIC_ONLY" layoutX="0.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key62" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key64" contentDisplay="GRAPHIC_ONLY" layoutX="100.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key65" contentDisplay="GRAPHIC_ONLY" layoutX="150.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key67" contentDisplay="GRAPHIC_ONLY" layoutX="200.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key69" contentDisplay="GRAPHIC_ONLY" layoutX="250.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key71" contentDisplay="GRAPHIC_ONLY" layoutX="300.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key72" contentDisplay="GRAPHIC_ONLY" layoutX="350.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key74" contentDisplay="GRAPHIC_ONLY" layoutX="400.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key76" contentDisplay="GRAPHIC_ONLY" layoutX="450.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key77" contentDisplay="GRAPHIC_ONLY" layoutX="500.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key79" contentDisplay="GRAPHIC_ONLY" layoutX="550.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key81" contentDisplay="GRAPHIC_ONLY" layoutX="600.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key83" contentDisplay="GRAPHIC_ONLY" layoutX="650.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
-                                        <TimeButton fx:id="key61" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="30.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key63" contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key66" contentDisplay="GRAPHIC_ONLY" layoutX="185.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key68" contentDisplay="GRAPHIC_ONLY" layoutX="235.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key70" contentDisplay="GRAPHIC_ONLY" layoutX="285.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key73" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key75" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key78" contentDisplay="GRAPHIC_ONLY" layoutX="535.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key80" contentDisplay="GRAPHIC_ONLY" layoutX="585.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                        <TimeButton fx:id="key82" contentDisplay="GRAPHIC_ONLY" layoutX="635.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
-                                    </children>
-                                </Pane>
-                                <VBox alignment="CENTER" layoutX="722.5" layoutY="2.0" prefHeight="187.0" prefWidth="138.0">
-                                    <children>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="37.0" prefWidth="131.0" text="Record Pattern" />
-                                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="record" />
-                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="130.0" text="Patterns" />
-                                        <Button layoutX="10.0" layoutY="47.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="1" />
-                                        <Button layoutX="10.0" layoutY="47.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="2" />
-                                        <Button layoutX="10.0" layoutY="110.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="3" />
-                                        <Button layoutX="10.0" layoutY="110.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="4" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </AnchorPane>
+                        <MenuItem onAction="#setUpNewProjectHandler" text="New Project" />
+                        <MenuItem onAction="#saveProjectHandler" text="Save" />
+                        <MenuItem onAction="#openProjectHandler" text="Open" />
                     </items>
-                </SplitPane>
-                <MenuBar prefHeight="11.0" prefWidth="879.0">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#setUpNewProjectHandler" text="New Project" />
-                                <MenuItem mnemonicParsing="false" onAction="#saveProjectHandler" text="Save"/>
-                                <MenuItem mnemonicParsing="false" onAction="#openProjectHandler" text="Open"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <ComboBox prefHeight="31.0" prefWidth="183.0" promptText="Custom Note" GridPane.columnIndex="1" />
-                <VBox alignment="TOP_CENTER" prefHeight="206.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <children>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="130.0" text="Record" />
-                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" onMouseClicked="#recordClickedHandler" >
-                        <graphic>
-                            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@images/buttons/record.png" />
-                                </image>
-                            </ImageView>
-                        </graphic></ToggleButton>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
-                        <ToggleButton mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" >
-                            <graphic>
-                                <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/buttons/play.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </ToggleButton>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
-                        <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHanlder"  />
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
-                        <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" onMouseClicked="#metronomeClickedHandler"/>
-                    </children>
-                </VBox>
-            </children>
-    <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-    </padding>
-
+                </Menu>
+                <Menu text="Edit">
+                    <items>
+                        <MenuItem text="Delete" />
+                    </items>
+                </Menu>
+                <Menu text="Help">
+                    <items>
+                        <MenuItem text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+      <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" GridPane.rowIndex="1">
+         <items>
+            <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" orientation="VERTICAL" prefWidth="600.0">
+               <items>
+                  <ScrollPane fitToWidth="true">
+                     <content>
+                         <StackPane alignment="TOP_CENTER">
+                             <children>
+                                <Pane fx:id="sheetPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefWidth="870.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="musicSheet"/>
+                             </children>
+                         </StackPane>
+                     </content>
+                  </ScrollPane>
+                  <Pane fx:id="pianoPane" maxHeight="200.0" prefHeight="200.0" prefWidth="700.0" maxWidth="-Infinity" SplitPane.resizableWithParent="false">
+                      <children>
+                          <TimeButton fx:id="key60" contentDisplay="GRAPHIC_ONLY" layoutX="0.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key62" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key64" contentDisplay="GRAPHIC_ONLY" layoutX="100.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key65" contentDisplay="GRAPHIC_ONLY" layoutX="150.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key67" contentDisplay="GRAPHIC_ONLY" layoutX="200.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key69" contentDisplay="GRAPHIC_ONLY" layoutX="250.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key71" contentDisplay="GRAPHIC_ONLY" layoutX="300.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key72" contentDisplay="GRAPHIC_ONLY" layoutX="350.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key74" contentDisplay="GRAPHIC_ONLY" layoutX="400.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key76" contentDisplay="GRAPHIC_ONLY" layoutX="450.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key77" contentDisplay="GRAPHIC_ONLY" layoutX="500.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key79" contentDisplay="GRAPHIC_ONLY" layoutX="550.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key81" contentDisplay="GRAPHIC_ONLY" layoutX="600.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key83" contentDisplay="GRAPHIC_ONLY" layoutX="650.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="200.0" prefWidth="50.0" styleClass="whiteKey" />
+                          <TimeButton fx:id="key61" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="30.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key63" contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key66" contentDisplay="GRAPHIC_ONLY" layoutX="185.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key68" contentDisplay="GRAPHIC_ONLY" layoutX="235.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key70" contentDisplay="GRAPHIC_ONLY" layoutX="285.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key73" contentDisplay="GRAPHIC_ONLY" layoutX="385.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key75" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key78" contentDisplay="GRAPHIC_ONLY" layoutX="535.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key80" contentDisplay="GRAPHIC_ONLY" layoutX="585.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                          <TimeButton fx:id="key82" contentDisplay="GRAPHIC_ONLY" layoutX="635.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#pianoMousePressedHandler" onMouseReleased="#pianoMouseReleasedHandler" prefHeight="145.0" prefWidth="32.0" styleClass="blackKey" />
+                      </children>
+                  </Pane>
+               </items>
+            </SplitPane>
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" SplitPane.resizableWithParent="false">
+               <children>
+                  <TitledPane text="Player">
+                     <content>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
+                              <ToggleButton prefHeight="25.0" prefWidth="120.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/buttons/play.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </ToggleButton>
+                              <Label alignment="CENTER" prefHeight="25.0" prefWidth="130.0" text="Record" />
+                              <ToggleButton fx:id="recordButton" onMouseClicked="#recordClickedHandler" prefHeight="25.0" prefWidth="120.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/buttons/record.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </ToggleButton>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
+                              <BPMTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
+                              <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#metronomeClickedHandler" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane text="Notes and rests">
+                     <content>
+                        <GridPane>
+                           <children>
+                              <Button fx:id="whole_note" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="70.0">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/notes/up/whole.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="whole_rest" contentDisplay="GRAPHIC_ONLY" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/rests/whole.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="half_note" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="70.0" GridPane.rowIndex="1">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/notes/up/half.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="half_rest" contentDisplay="GRAPHIC_ONLY" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/rests/half.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="quarter_note" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="70.0" GridPane.rowIndex="3">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/notes/up/quarter.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="quarter_rest" contentDisplay="GRAPHIC_ONLY" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" prefHeight="70.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/rests/quarter.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="eighth_note" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#noteRestDragDetectedHandler" prefHeight="70.0" prefWidth="70.0" GridPane.rowIndex="4">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/notes/up/eighth.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="eighth_rest" contentDisplay="GRAPHIC_ONLY" onDragDetected="#noteRestDragDetectedHandler" onMouseClicked="#restClickedHandler" prefHeight="70" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/rests/eighth.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="70.0" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
+   </children>
 </GridPane>
