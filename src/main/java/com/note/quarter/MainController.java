@@ -103,7 +103,7 @@ public class MainController implements Initializable {
     }
 
     public void keyPressedHandler(KeyEvent event) {
-        String key = event.getText();
+        String key = event.getText().toLowerCase();
         if (keyboardMapping.containsKey(key)) {
             pressPianoKey(keyboardMapping.get(key));
         } else if(event.getCode() == KeyCode.BACK_SPACE) {
@@ -112,7 +112,7 @@ public class MainController implements Initializable {
     }
 
     public void keyReleasedHandler(KeyEvent event) {
-        String key = event.getText();
+        String key = event.getText().toLowerCase();
         if (keyboardMapping.containsKey(key)) {
             releasePianoKey(keyboardMapping.get(key));
         }
@@ -186,7 +186,7 @@ public class MainController implements Initializable {
         event.consume();
     }
 
-    public void setUpBPMHanlder(KeyEvent event) {
+    public void setUpBPMHandler(KeyEvent event) {
         BPMTextField source = (BPMTextField)event.getSource();
         if(event.getCode().equals(KeyCode.ENTER))
         {
