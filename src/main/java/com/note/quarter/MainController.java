@@ -229,7 +229,6 @@ public class MainController implements Initializable {
     public void recordClickedHandler(Event event) {
         ToggleButton source = (ToggleButton) event.getSource();
         musicSheet.setRecording(source.isSelected());
-
     }
 
     public void saveProjectHandler(ActionEvent event) {
@@ -253,7 +252,6 @@ public class MainController implements Initializable {
                     MusicXMLBuilder builder = new MusicXMLBuilder();
                     builder.save(musicSheet.getMusicStaff().getNodes(), f);
                 }
-
             }
         }
     }
@@ -267,7 +265,7 @@ public class MainController implements Initializable {
         if (f != null) {
             if (!musicSheet.getMusicStaff().getNodes().isEmpty()) {
                 Optional<ButtonType> result = Alerts.raiseConfirmOpeningAlert().showAndWait();
-                if (result.get().equals(new ButtonType("NEW"))) {
+                if (result.get().getText().equals("New")) {
                     setUpNewProject();
                 }
             }
