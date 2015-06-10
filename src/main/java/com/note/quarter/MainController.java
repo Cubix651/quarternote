@@ -263,14 +263,12 @@ public class MainController implements Initializable {
         if (f != null) {
             f = new File(f.getAbsolutePath() + '.' + filter.getExtensions().get(0).split("\\.")[1]);
             if (!f.exists()) {
-                MusicXMLBuilder builder = new MusicXMLBuilder();
-                builder.save(musicSheet.getMusicStaff().getNodes(), f);
+                save(f);
             } else {
 
                 Optional<ButtonType> result = Alerts.raiseConfirmationAlert("File already exists. Do you want to override it?", null).showAndWait();
                 if (result.get().equals(ButtonType.OK)) {
-                    MusicXMLBuilder builder = new MusicXMLBuilder();
-                    builder.save(musicSheet.getMusicStaff().getNodes(), f);
+                   save(f);
                 }
             }
         }
