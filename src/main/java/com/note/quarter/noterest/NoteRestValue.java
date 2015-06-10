@@ -7,13 +7,17 @@ public enum NoteRestValue {
     QUARTER(4),
     EIGHTH(2);
 
-    private int relativeValue;
+    private int absoluteValue;
 
     public int getRelativeValue() {
-        return relativeValue;
+        return absoluteValue;
     }
 
-    NoteRestValue(int relativeValue) {
-        this.relativeValue = relativeValue;
+    public int getRelativeValue(NoteRestValue to) {
+        return absoluteValue / to.absoluteValue;
+    }
+
+    NoteRestValue(int absoluteValue) {
+        this.absoluteValue = absoluteValue;
     }
 }
