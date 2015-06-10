@@ -40,7 +40,7 @@
                <items>
                   <ScrollPane fitToWidth="true">
                      <content>
-                         <StackPane alignment="TOP_CENTER">
+                         <StackPane fx:id="stackPane" alignment="TOP_CENTER">
                              <children>
                                 <Pane fx:id="sheetPane" onDragDropped="#noteRestDragDroppedHandler" onDragOver="#noteRestDragOverHandler" prefWidth="870.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="musicSheet"/>
                              </children>
@@ -111,7 +111,7 @@
                         </VBox>
                      </content>
                   </TitledPane>
-                  <TitledPane text="Notes and rests">
+                  <TitledPane fx:id="notesAndRests" text="Notes and rests">
                      <content>
                         <GridPane>
                            <children>

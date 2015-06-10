@@ -1,22 +1,24 @@
 package com.note.quarter.opensave;
 
-import com.note.quarter.drawing.MusicSheet;
-import com.note.quarter.noterest.Note;
-import com.note.quarter.noterest.NotePitch;
-import com.note.quarter.noterest.NoteRestValue;
-import com.note.quarter.noterest.Rest;
+import com.note.quarter.noterest.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.List;
 import java.util.Stack;
 
 
 public class SAXHandler extends DefaultHandler {
 
     private Stack<String> elements = new Stack<>();
-    private MusicSheet musicSheet;
+
+    public List<NoteRest> getNoteRestList() {
+        return noteRestList;
+    }
+
+    private List<NoteRest> noteRestList;
     private int currentBeat;
     private int currentBeatType;
     private int divisions;
@@ -25,20 +27,24 @@ public class SAXHandler extends DefaultHandler {
     private NoteRestValue currentNoteRestValue;
     private int currentNoteIndex;
     private int currentNoteOctave;
+    private int progress = 0;
 
 
-    public SAXHandler(MusicSheet musicSheet) {
-        this.musicSheet = musicSheet;
+    public SAXHandler(List<NoteRest> l) {
+        noteRestList = l;
     }
 
     public void startDocument() throws SAXException {
+
     }
 
 
     public void endDocument() throws SAXException {
+
     }
 
     public void startElement(String uri, String localName, String qName, Attributes var4) throws SAXException {
+        System.out.println(++progress+' '+qName);
         elements.push(qName);
         if (qName.equals("clef")) {
             currentClefSet = true;
@@ -47,15 +53,16 @@ public class SAXHandler extends DefaultHandler {
 
     public void endElement(String var1, String var2, String var3) throws SAXException {
         String popped = elements.pop();
+        System.out.println(popped);
         if (popped.equals("note")) {
             if (currentNotePitch != null) {
                 Note n = new Note(currentNoteRestValue, currentNotePitch);
-                musicSheet.addNoteRest(n);
+                        noteRestList.add(n);
                 currentNotePitch = null;
                 currentNoteRestValue = null;
             } else {//is a rest
                 Rest rest = new Rest(currentNoteRestValue);
-                musicSheet.addNoteRest(rest);
+                        noteRestList.add(rest);
                 currentNotePitch = null;
             }
         }

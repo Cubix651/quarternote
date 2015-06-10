@@ -5,28 +5,28 @@ import com.note.quarter.controls.TimeButton;
 import com.note.quarter.drawing.ImageResource;
 import com.note.quarter.drawing.MusicSheet;
 import com.note.quarter.noterest.*;
-import com.note.quarter.opensave.*;
+import com.note.quarter.opensave.Alerts;
+import com.note.quarter.opensave.MusicXMLBuilder;
+import com.note.quarter.opensave.OpenTask;
 import com.note.quarter.sound.MelodyPlayer;
 import com.note.quarter.sound.MetronomeScheduler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import org.xml.sax.SAXException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +37,10 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private TitledPane notesAndRests;
     @FXML
     private Pane pianoPane;
     @FXML
@@ -260,43 +264,49 @@ public class MainController implements Initializable {
         }
     }
 
+    private void open(File f)
+    {
+        Label label = new Label("Opening...");
+        label.setLayoutX(100);
+        label.setLayoutY(100);
+        stackPane.getChildren().add(label);
+        OpenTask t = new OpenTask(label,musicSheet,f,stackPane);
+        pianoPane.setDisable(true);
+        notesAndRests.setDisable(true);
+        t.runningProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!t.isRunning())
+                {
+                    pianoPane.setDisable(false);
+                    notesAndRests.setDisable(false);
+                }
+            }
+        });
+        Thread thread = new Thread(t);
+        thread.start();
+    }
+
     public void openProjectHandler(ActionEvent event) {
+
+
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML", "*.xml");
         fileChooser.getExtensionFilters().add(filter);
         Window window = sheetPane.getScene().getWindow();
         File f = fileChooser.showOpenDialog(window);
         if (f != null) {
+
+
             if (!musicSheet.getMusicStaff().getNodes().isEmpty()) {
                 Optional<ButtonType> result = Alerts.raiseConfirmOpeningAlert().showAndWait();
                 if (result.get().getText().equals("New")) {
                     setUpNewProject();
                 }
             }
-
-            MusicXMLParserSAX parserSAX = new MusicXMLParserSAX(musicSheet);
-            try {
-                parserSAX.open(f);
-            } catch (ParserConfigurationException e) {
-                Alerts.raiseErrorAlert(e, "Parser configuration exception").showAndWait();
-                e.printStackTrace();
-            } catch (SAXException e) {
-                Exception exception = e.getException();
-
-                if (exception == null) {
-                    Alerts.raiseErrorAlert(e, "SAX Exception").showAndWait();
-                } else if (exception instanceof UnsupportedNotationException) {
-                    Alerts.raiseErrorAlert(exception, "Cannot resolve notation").showAndWait();
-                } else if (exception instanceof IllegalDocumentTypeException) {
-                    System.out.println(exception);
-                    Alerts.raiseErrorAlert(exception, "Invalid document type").showAndWait();
-                }
-                e.printStackTrace();
-            } catch (IOException e) {
-                Alerts.raiseErrorAlert(e, "IO exception").showAndWait();
-                e.printStackTrace();
-            }
+            open(f);
         }
+
     }
 
     public void deleteLastHandler(Event event) {

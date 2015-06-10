@@ -15,6 +15,7 @@ public class MainForm extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("MainForm.fxml"));
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
@@ -25,6 +26,8 @@ public class MainForm extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -36,6 +39,7 @@ public class MainForm extends Application {
 
 
         });
+
     }
 
     public static void main(String[] args) {
