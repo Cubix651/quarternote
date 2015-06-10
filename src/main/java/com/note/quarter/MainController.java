@@ -1,47 +1,62 @@
 package com.note.quarter;
 
+import com.note.quarter.controls.NumericTextField;
+import com.note.quarter.controls.TimeButton;
+import com.note.quarter.drawing.ImageResource;
+import com.note.quarter.drawing.MusicSheet;
+import com.note.quarter.drawing.NoteRestNode;
+import com.note.quarter.noterest.*;
+import com.note.quarter.opensave.Alerts;
+import com.note.quarter.opensave.MusicXMLBuilder;
+import com.note.quarter.opensave.OpenTask;
+import com.note.quarter.opensave.SaveTask;
+import com.note.quarter.sound.MelodyPlayer;
+import com.note.quarter.sound.MetronomeScheduler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import com.note.quarter.sound.NotesPlayer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import org.xml.sax.SAXException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
+    @FXML private StackPane stackPane;
+    @FXML private TitledPane notesAndRests;
     @FXML private Pane pianoPane;
     @FXML private Pane sheetPane;
     @FXML private ToggleButton metronomeButton;
+    @FXML private ToggleButton playButton;
     @FXML private ToggleButton recordButton;
+
     private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
     private MusicSheet musicSheet;
     private MetronomeScheduler metronomeScheduler;
-    private Map<Integer, TimeButton> pianoKeys = new HashMap<>();
     private MelodyPlayer melodyPlayer;
+    private Map<Integer, TimeButton> pianoKeys = new HashMap<>();
+    private NotesPlayer notesPlayer;
     private Map<String, Integer> keyboardMapping = new HashMap<>();
 
     String keyboardMappingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,8 +73,15 @@ public class MainController implements Initializable {
         musicSheet = new MusicSheet(sheetPane);
 
         try {
-            melodyPlayer = new MelodyPlayer();
+            notesPlayer = new NotesPlayer();
         } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            melodyPlayer = new MelodyPlayer();
+            melodyPlayer.setOnEndMelodyEvent(() -> playButton.setSelected(false));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -70,16 +92,20 @@ public class MainController implements Initializable {
         }
     }
 
-    private void setUpNewProject()
-    {
+    public void performClose() {
+        metronomeScheduler.close();
+        melodyPlayer.close();
+    }
+
+    private void setUpNewProject() {
         recordButton.setSelected(false);
         sheetPane.getChildren().clear();
         musicSheet = new MusicSheet(sheetPane);
     }
 
     private void pressPianoKey(int noteNumber) {
-        if (!melodyPlayer.isNoteOn(noteNumber)) {
-            melodyPlayer.noteOn(noteNumber);
+        if (!notesPlayer.isNoteOn(noteNumber)) {
+            notesPlayer.noteOn(noteNumber);
             TimeButton button = pianoKeys.get(noteNumber);
             button.getStyleClass().replaceAll(s -> s + "Pressed");
             button.setPressedTime(System.nanoTime());
@@ -88,12 +114,12 @@ public class MainController implements Initializable {
     }
 
     private void releasePianoKey(int noteNumber) {
-        if (melodyPlayer.isNoteOn(noteNumber)) {
-            melodyPlayer.noteOff(noteNumber);
+        if (notesPlayer.isNoteOn(noteNumber)) {
+            notesPlayer.noteOff(noteNumber);
             TimeButton button = pianoKeys.get(noteNumber);
-            long duration = (System.nanoTime()-button.getPressedTime())/1000000; //in miliseconds
+            long duration = (System.nanoTime() - button.getPressedTime()) / 1000000; //in miliseconds
             button.getStyleClass().replaceAll(s -> s.substring(0, s.length() - "Pressed".length()));
-            if(musicSheet.isRecording()) {
+            if (musicSheet.isRecording()) {
                 NoteRestValue value = metronomeScheduler.getNoteRestValueFromDuration(duration);
                 musicSheet.addNoteRest(new Note(value, new NotePitch(noteNumber)));
             }
@@ -104,7 +130,7 @@ public class MainController implements Initializable {
         String key = event.getText().toLowerCase();
         if (keyboardMapping.containsKey(key)) {
             pressPianoKey(keyboardMapping.get(key));
-        } else if(event.getCode() == KeyCode.BACK_SPACE) {
+        } else if (event.getCode() == KeyCode.BACK_SPACE) {
             musicSheet.deleteLastNoteRest();
         }
     }
@@ -133,11 +159,10 @@ public class MainController implements Initializable {
         String kind = split[1];
         NoteRest noteRest = null;
         Image image = null;
-        if(kind.equals("note")) {
+        if (kind.equals("note")) {
             noteRest = new Note(NoteRestValue.valueOf(value.toUpperCase()), null);
             image = ImageResource.getUpNoteImage(noteRest.getValue());
-        }
-        else if(kind.equals("rest")) {
+        } else if (kind.equals("rest")) {
             noteRest = new Rest(NoteRestValue.valueOf(value.toUpperCase()));
             image = ImageResource.getRestImage(noteRest.getValue());
         }
@@ -161,23 +186,23 @@ public class MainController implements Initializable {
         Dragboard dragboard = event.getDragboard();
         boolean isSuccessful = false;
 
-        if(dragboard.hasContent(NOTE_FORMAT)) {
+        if (dragboard.hasContent(NOTE_FORMAT)) {
             NoteRest noteRest = (NoteRest) dragboard.getContent(NOTE_FORMAT);
-                    double y = event.getY();
-                    musicSheet.addNoteRest(noteRest, y);
-                    isSuccessful = true;
+            double y = event.getY();
+            musicSheet.addNoteRest(noteRest, y);
+            isSuccessful = true;
         }
         event.setDropCompleted(isSuccessful);
         event.consume();
     }
 
     public void setUpNewProjectHandler(Event event) throws IOException {
-       setUpNewProject();
+        setUpNewProject();
         event.consume();
     }
 
     public void restClickedHandler(Event event) {
-        Button source = (Button)event.getSource();
+        Button source = (Button) event.getSource();
         String[] split = source.getId().split("_");
         String value = split[0];
         musicSheet.addNoteRest(new Rest(NoteRestValue.valueOf(value.toUpperCase())));
@@ -185,13 +210,17 @@ public class MainController implements Initializable {
     }
 
     public void setUpBPMHandler(KeyEvent event) {
-        BPMTextField source = (BPMTextField)event.getSource();
-        if(event.getCode().equals(KeyCode.ENTER))
-        {
-            metronomeScheduler.setBPM(Integer.parseInt(source.getText()));
-            if(metronomeButton.isSelected()) {
+        NumericTextField source = (NumericTextField) event.getSource();
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            metronomeScheduler.setBPM(source.getValue());
+            melodyPlayer.setBpm(source.getValue());
+            if (metronomeButton.isSelected()) {
                 metronomeButton.setSelected(false);
                 metronomeButton.setText("Metronome Off");
+            }
+            if(playButton.isSelected()) {
+                playButton.setSelected(false);
+                melodyPlayer.stop();
             }
         }
 
@@ -199,9 +228,8 @@ public class MainController implements Initializable {
     }
 
     public void metronomeClickedHandler(Event event) {
-        ToggleButton source = (ToggleButton)event.getSource();
-        if(source.isSelected())
-        {
+        ToggleButton source = (ToggleButton) event.getSource();
+        if (source.isSelected()) {
             source.setText("Metronome On");
             try {
                 metronomeScheduler.metronomeOn();
@@ -210,112 +238,129 @@ public class MainController implements Initializable {
             } catch (InvalidMidiDataException e) {
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             metronomeScheduler.metronomeOff();
             source.setText("Metronome Off");
         }
 
     }
 
-    public MetronomeScheduler getMetronomeScheduler()
-    {
-        return metronomeScheduler;
-    }
-
     public void recordClickedHandler(Event event) {
-        ToggleButton source = (ToggleButton)event.getSource();
+        ToggleButton source = (ToggleButton) event.getSource();
         musicSheet.setRecording(source.isSelected());
-
     }
 
     public void saveProjectHandler(ActionEvent event) {
 
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML", "*.xml");
         fileChooser.setInitialFileName("MyScore");
         fileChooser.getExtensionFilters().add(filter);
         Window window = sheetPane.getScene().getWindow();
-        File f =fileChooser.showSaveDialog(window);
+        File f = fileChooser.showSaveDialog(window);
 
-        if(f!=null) {
-            f = new File(f.getAbsolutePath()+'.'+filter.getExtensions().get(0).split("\\.")[1]);
-            if(!f.exists()) {
+        if (f != null) {
+            f = new File(f.getAbsolutePath() + '.' + filter.getExtensions().get(0).split("\\.")[1]);
+            if (!f.exists()) {
                 MusicXMLBuilder builder = new MusicXMLBuilder();
                 builder.save(musicSheet.getMusicStaff().getNodes(), f);
-            }
-            else {
+            } else {
 
-                Optional<ButtonType> result = Alerts.raiseConfirmationAlert("File already exists. Do you want to override it?",null).showAndWait();
-                if(result.get().equals(ButtonType.OK)){
+                Optional<ButtonType> result = Alerts.raiseConfirmationAlert("File already exists. Do you want to override it?", null).showAndWait();
+                if (result.get().equals(ButtonType.OK)) {
                     MusicXMLBuilder builder = new MusicXMLBuilder();
                     builder.save(musicSheet.getMusicStaff().getNodes(), f);
                 }
-
             }
         }
     }
 
+    private void startOpenSaveTask(Task t)
+    {
+        pianoPane.setDisable(true);
+        notesAndRests.setDisable(true);
+        t.runningProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!t.isRunning())
+                {
+                    pianoPane.setDisable(false);
+                    notesAndRests.setDisable(false);
+                }
+            }
+        });
+        Thread thread = new Thread(t);
+        thread.start();
+    }
+
+    private void save(File f){
+        Label label = new Label("Saving...");
+        label.setLayoutX(100);
+        label.setLayoutY(100);
+        stackPane.getChildren().add(label);
+        SaveTask t = new SaveTask(label,musicSheet.getMusicStaff().getNodes(),f,stackPane);
+        startOpenSaveTask(t);
+    }
+
+    private void open(File f)
+    {
+        Label label = new Label("Opening...");
+        label.setLayoutX(100);
+        label.setLayoutY(100);
+        stackPane.getChildren().add(label);
+        OpenTask t = new OpenTask(label,musicSheet,f,stackPane);
+        startOpenSaveTask(t);
+    }
+
     public void openProjectHandler(ActionEvent event) {
+
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML","*.xml");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML", "*.xml");
         fileChooser.getExtensionFilters().add(filter);
         Window window = sheetPane.getScene().getWindow();
         File f = fileChooser.showOpenDialog(window);
-        if(f!=null)
-        {
-            if(!musicSheet.getMusicStaff().getNodes().isEmpty())
-            {
+        if (f != null) {
+
+
+            if (!musicSheet.getMusicStaff().getNodes().isEmpty()) {
                 Optional<ButtonType> result = Alerts.raiseConfirmOpeningAlert().showAndWait();
-                if(result.get().equals(new ButtonType("NEW"))){
+                if (result.get().getText().equals("New")) {
                     setUpNewProject();
                 }
             }
+            open(f);
+        }
 
-            MusicXMLPareserSAX pareserSAX = new MusicXMLPareserSAX(musicSheet);
+    }
+
+    public void deleteLastHandler(Event event) {
+        musicSheet.deleteLastNoteRest();
+    }
+
+    public void aboutHandler(Event event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("QuarterNote 1.0");
+        alert.setContentText("Project for programming classes\n\nAuthors:\nAleksandra Nowak and Jakub Cisło" +
+                "\n\nRelease date:\nJune of 2015\n\nhttps://bitbucket.org/quarternote/quarternote");
+
+        alert.showAndWait();
+    }
+
+    public void playClickedHandler(Event event) {
+        if (((ToggleButton) event.getSource()).isSelected()) {
             try {
-                pareserSAX.open(f);
-            } catch (ParserConfigurationException e) {
-                Alerts.raiseErrorAlert(e,"Parser configuration exception").showAndWait();
+                List<NoteRest> notes = musicSheet.getMusicStaff().getNodes().stream()
+                        .filter(sheetItem -> sheetItem instanceof NoteRestNode)
+                        .map(sheetItem -> ((NoteRestNode)sheetItem).getNoteRest())
+                        .collect(Collectors.toList());
+
+                melodyPlayer.play(notes);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            catch (SAXException e) {
-                Exception exception = e.getException();
-
-                if(exception == null){ Alerts.raiseErrorAlert(e,"SAX Exception").showAndWait();}
-                else if(exception instanceof UnsupportedNotationException){
-                    Alerts.raiseErrorAlert(exception,"Cannot resolve notation").showAndWait() ;
-                }
-                else if(exception instanceof IllegalDocumentTypeException){
-                    System.out.println(exception);
-                    Alerts.raiseErrorAlert(exception,"Invalid document type").showAndWait();
-                }
-                e.printStackTrace();
-            } catch (IOException e) {
-                Alerts.raiseErrorAlert(e,"IO exception").showAndWait();
-                e.printStackTrace();
-            }
-
-         /*   MusicXMLParserDOM parser = new MusicXMLParserDOM();
-            try {
-                parser.open(f,musicSheet);
-            } catch (ParserConfigurationException e) {
-                Alerts.raiseErrorAlert(e,"Parser configuration exception").showAndWait();
-                e.printStackTrace();
-            } catch (IOException e) {
-                Alerts.raiseErrorAlert(e,"IO exception").showAndWait();
-                e.printStackTrace();
-            } catch (SAXException e) {
-                Alerts.raiseErrorAlert(e,"SAX parsing exception").showAndWait();
-                e.printStackTrace();
-            } catch (UnsupportedNotationException e) {
-                Alerts.raiseErrorAlert(e,"Unsupported or invalid music notation").showAndWait();
-                e.printStackTrace();
-            } catch (IllegalDocumentTypeException e) {
-                Alerts.raiseErrorAlert(e,"Wrong or not specified document type").showAndWait();
-                e.printStackTrace();
-            }*/
+        } else {
+            melodyPlayer.stop();
         }
     }
 }
