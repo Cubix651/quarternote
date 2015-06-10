@@ -8,10 +8,12 @@ import com.note.quarter.noterest.*;
 import com.note.quarter.opensave.Alerts;
 import com.note.quarter.opensave.MusicXMLBuilder;
 import com.note.quarter.opensave.OpenTask;
+import com.note.quarter.opensave.SaveTask;
 import com.note.quarter.sound.MelodyPlayer;
 import com.note.quarter.sound.MetronomeScheduler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -264,13 +266,8 @@ public class MainController implements Initializable {
         }
     }
 
-    private void open(File f)
+    private void startOpenSaveTask(Task t)
     {
-        Label label = new Label("Opening...");
-        label.setLayoutX(100);
-        label.setLayoutY(100);
-        stackPane.getChildren().add(label);
-        OpenTask t = new OpenTask(label,musicSheet,f,stackPane);
         pianoPane.setDisable(true);
         notesAndRests.setDisable(true);
         t.runningProperty().addListener(new ChangeListener<Boolean>() {
@@ -287,8 +284,26 @@ public class MainController implements Initializable {
         thread.start();
     }
 
-    public void openProjectHandler(ActionEvent event) {
+    private void save(File f){
+        Label label = new Label("Saving...");
+        label.setLayoutX(100);
+        label.setLayoutY(100);
+        stackPane.getChildren().add(label);
+        SaveTask t = new SaveTask(label,musicSheet.getMusicStaff().getNodes(),f,stackPane);
+        startOpenSaveTask(t);
+    }
 
+    private void open(File f)
+    {
+        Label label = new Label("Opening...");
+        label.setLayoutX(100);
+        label.setLayoutY(100);
+        stackPane.getChildren().add(label);
+        OpenTask t = new OpenTask(label,musicSheet,f,stackPane);
+        startOpenSaveTask(t);
+    }
+
+    public void openProjectHandler(ActionEvent event) {
 
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("MusicXML", "*.xml");

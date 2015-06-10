@@ -96,7 +96,13 @@ public class OpenTask extends Task{
     }
     private void setProgressIndicator(final Label v)
     {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
                 v.setGraphic(new ProgressIndicator());
+            }
+        });
+
     }
 }
 
