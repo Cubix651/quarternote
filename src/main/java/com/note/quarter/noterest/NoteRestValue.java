@@ -10,7 +10,7 @@ public enum NoteRestValue {
     private int absoluteValue;
 
     public int getRelativeValue() {
-        return absoluteValue;
+        return absoluteValue / EIGHTH.absoluteValue;
     }
 
     public int getRelativeValue(NoteRestValue to) {

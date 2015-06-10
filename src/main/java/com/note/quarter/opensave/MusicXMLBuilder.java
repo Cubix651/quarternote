@@ -191,7 +191,7 @@ public class MusicXMLBuilder {
 
         Text stepText = doc.createTextNode(n.getPitch().getStep());
         Text octaveText = doc.createTextNode(n.getPitch().getOctave()+"");
-        Text durationText = doc.createTextNode(n.getValue().getRelativeValue()/2 +"");
+        Text durationText = doc.createTextNode(n.getValue().getRelativeValue() +"");
         Text typeText = doc.createTextNode(n.getValue().toString().toLowerCase());
 
         type.appendChild(typeText);
@@ -224,7 +224,7 @@ public class MusicXMLBuilder {
         Element duration = doc.createElement("duration");
         Element type = doc.createElement("type");
 
-        Text durationText = doc.createTextNode(n.getValue().getRelativeValue()/2 +"");
+        Text durationText = doc.createTextNode(n.getValue().getRelativeValue() +"");
         Text typeText = doc.createTextNode(n.getValue().toString().toLowerCase());
 
         type.appendChild(typeText);

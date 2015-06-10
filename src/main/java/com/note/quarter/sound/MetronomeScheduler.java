@@ -9,7 +9,6 @@ import static java.lang.StrictMath.round;
 
 public class MetronomeScheduler implements MetaEventListener {
 
-
     private final int DEFAULT_BPM = 60;
     private final int DEFAULT_BPM_FREQUENCY = 1;
     private final long DEFAULT_BPM_TO_MILLISECONDS = 1000;
