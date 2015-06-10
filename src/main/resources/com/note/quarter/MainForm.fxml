@@ -84,7 +84,7 @@
                         <VBox alignment="TOP_CENTER">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Play" />
-                              <ToggleButton prefHeight="25.0" prefWidth="120.0">
+                              <ToggleButton fx:id="playButton" onMouseClicked="#playClickedHandler" prefHeight="25.0" prefWidth="120.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -104,7 +104,7 @@
                                  </graphic>
                               </ToggleButton>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
-                              <NumericTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
+                              <NumericTextField fx:id="bpmField" text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
                               <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#metronomeClickedHandler" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" />
                            </children>

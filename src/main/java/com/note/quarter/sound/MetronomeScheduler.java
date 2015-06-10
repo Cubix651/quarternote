@@ -24,10 +24,6 @@ public class MetronomeScheduler implements MetaEventListener {
     private long shortestNoteDuration = DEFAULT_BPM_TO_MILLISECONDS / 2;
     private Sequencer sequencer;
 
-    public Sequencer getSequencer() {
-        return sequencer;
-    }
-
     public MetronomeScheduler() throws MidiUnavailableException {
         sequencer = MidiSystem.getSequencer();
     }
@@ -127,6 +123,7 @@ public class MetronomeScheduler implements MetaEventListener {
     }
 
     public void metronomeOff() {
+        sequencer.stop();
         sequencer.close();
     }
 
@@ -136,6 +133,14 @@ public class MetronomeScheduler implements MetaEventListener {
             sequencer.setTickPosition(1);
             sequencer.setTempoInBPM(bpm);
             sequencer.start();
+        }
+    }
+
+    public void close() {
+        if(sequencer!=null && sequencer.isOpen()) {
+            if(sequencer.isRunning())
+                sequencer.stop();
+            sequencer.close();
         }
     }
 }

@@ -1,49 +1,89 @@
 package com.note.quarter.sound;
 
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Synthesizer;
-import java.util.HashSet;
-import java.util.Set;
+import com.note.quarter.noterest.Note;
+import com.note.quarter.noterest.NoteRest;
+import com.note.quarter.noterest.NoteRestValue;
+import com.note.quarter.noterest.Rest;
+
+import javax.sound.midi.*;
+import java.util.List;
 
 public class MelodyPlayer {
 
-    private int volume = 80;
-    private Synthesizer synthesizer;
-    private MidiChannel mainChannel;
-    final private int mainChannelNumber = 0;
-    private Set<Integer> notesOn = new HashSet<Integer>();
+    private static final int VELOCITY = 64;
+    private final byte END_OF_FILE = 0x2F;
 
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
+    private Sequencer sequencer;
+    private Runnable onEndMelodyEvent = null;
+    private float bpm = 60;
 
     public MelodyPlayer() throws MidiUnavailableException{
-        synthesizer = MidiSystem.getSynthesizer();
-        synthesizer.open();
-        mainChannel = synthesizer.getChannels()[mainChannelNumber];
+        sequencer = MidiSystem.getSequencer();
     }
 
-    public void noteOn(int noteNumber) {
-        mainChannel.noteOn(noteNumber, volume);
-        notesOn.add(noteNumber);
+    public void setOnEndMelodyEvent(Runnable onEndMelodyEvent) {
+        this.onEndMelodyEvent = onEndMelodyEvent;
     }
 
-    public void noteOff(int noteNumber) {
-        mainChannel.noteOff(noteNumber);
-        notesOn.remove(noteNumber);
+    public void setBpm(float bpm) {
+        this.bpm = bpm;
     }
 
-    public void allNotesOff() {
-        mainChannel.allNotesOff();
+    public void play(List<NoteRest> notes) throws MidiUnavailableException, InvalidMidiDataException {
+        if (!sequencer.isOpen())
+            sequencer.open();
+        Sequence sequence = new Sequence(Sequence.PPQ, NoteRestValue.QUARTER.getRelativeValue(NoteRestValue.EIGHTH));
+        Track track = sequence.createTrack();
+        fillInTrack(track, notes);
+        sequencer.setSequence(sequence);
+        sequencer.setTempoInBPM(bpm);
+        sequencer.addMetaEventListener((msg) -> {
+                if(msg.getType() == END_OF_FILE) {
+                    if(onEndMelodyEvent != null)
+                        onEndMelodyEvent.run();
+                    stop();
+                }
+            });
+        sequencer.start();
     }
 
-    public boolean isNoteOn(int noteNumber) {
-        return notesOn.contains(noteNumber);
+    public void stop() {
+        if(sequencer != null && sequencer.isOpen()) {
+            if (sequencer.isRunning())
+                sequencer.stop();
+            sequencer.close();
+        }
+    }
+
+    public void close() {
+        stop();
+    }
+
+    private void fillInTrack(Track track, List<NoteRest> notes) throws InvalidMidiDataException{
+        int tick = 0;
+        for (NoteRest item : notes) {
+            if (item instanceof Note) {
+                Note note = (Note) item;
+                track.add(createNoteOnEvent(note.getPitch().getMidiCode(), tick));
+                tick += note.getValue().getRelativeValue(NoteRestValue.EIGHTH);
+                track.add(createNoteOffEvent(note.getPitch().getMidiCode(), tick));
+            } else if (item instanceof Rest) {
+                tick += item.getValue().getRelativeValue(NoteRestValue.EIGHTH);
+            }
+        }
+    }
+
+    private static MidiEvent createNoteOnEvent(int key, long tick) throws InvalidMidiDataException {
+        return createNoteEvent(ShortMessage.NOTE_ON, key, VELOCITY, tick);
+    }
+
+    private static MidiEvent createNoteOffEvent(int key, long tick) throws InvalidMidiDataException{
+        return createNoteEvent(ShortMessage.NOTE_OFF, key, 0, tick);
+    }
+
+    private static MidiEvent createNoteEvent(int command, int key, int velocity, long tick) throws InvalidMidiDataException{
+        ShortMessage message = new ShortMessage();
+        message.setMessage(command, 0, key, velocity);
+        return new MidiEvent(message, tick);
     }
 }

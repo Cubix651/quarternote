@@ -18,6 +18,12 @@ public class NumericTextField extends TextField {
     }
 
     private boolean validate(String t) {
-        return (t.equals("") || t.matches("[0-9]"));
+        return t.matches("[0-9]*");
+    }
+
+    public int getValue() {
+        if(this.getText().equals(""))
+            return 0;
+        return Integer.parseInt(this.getText());
     }
 }
