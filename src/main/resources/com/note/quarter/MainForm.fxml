@@ -77,7 +77,7 @@
                   </Pane>
                </items>
             </SplitPane>
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" SplitPane.resizableWithParent="false">
+            <VBox fx:id="sideBar" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" SplitPane.resizableWithParent="false">
                <children>
                   <TitledPane text="Player">
                      <content>
@@ -104,14 +104,14 @@
                                  </graphic>
                               </ToggleButton>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Beats Per Minute" />
-                              <NumericTextField fx:id="bpmField" text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
+                              <NumericTextField text="60" alignment="CENTER" prefHeight="25.0" prefWidth="70.0" onKeyReleased="#setUpBPMHandler"  />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="130.0" text="Metronome" />
                               <ToggleButton fx:id="metronomeButton" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#metronomeClickedHandler" prefHeight="25.0" prefWidth="130.0" text="Metronome Off" />
                            </children>
                         </VBox>
                      </content>
                   </TitledPane>
-                  <TitledPane fx:id="notesAndRests" text="Notes and rests">
+                  <TitledPane text="Notes and rests">
                      <content>
                         <GridPane>
                            <children>

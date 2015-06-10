@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -40,12 +41,12 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable {
 
     @FXML private StackPane stackPane;
-    @FXML private TitledPane notesAndRests;
     @FXML private Pane pianoPane;
     @FXML private Pane sheetPane;
     @FXML private ToggleButton metronomeButton;
     @FXML private ToggleButton playButton;
     @FXML private ToggleButton recordButton;
+    @FXML private VBox sideBar;
 
     private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
@@ -278,14 +279,14 @@ public class MainController implements Initializable {
     private void startOpenSaveTask(Task t)
     {
         pianoPane.setDisable(true);
-        notesAndRests.setDisable(true);
+        sideBar.setDisable(true);
         t.runningProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(!t.isRunning())
                 {
                     pianoPane.setDisable(false);
-                    notesAndRests.setDisable(false);
+                    sideBar.setDisable(false);
                 }
             }
         });
