@@ -4,10 +4,12 @@ import com.note.quarter.controls.NumericTextField;
 import com.note.quarter.controls.TimeButton;
 import com.note.quarter.drawing.ImageResource;
 import com.note.quarter.drawing.MusicSheet;
+import com.note.quarter.drawing.NoteRestNode;
 import com.note.quarter.noterest.*;
 import com.note.quarter.opensave.*;
 import com.note.quarter.sound.MelodyPlayer;
 import com.note.quarter.sound.MetronomeScheduler;
+import com.note.quarter.sound.NotesPlayer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -30,31 +32,26 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private Pane pianoPane;
-    @FXML
-    private Pane sheetPane;
-    @FXML
-    private ToggleButton metronomeButton;
-    @FXML
-    private ToggleButton recordButton;
+    @FXML private Pane pianoPane;
+    @FXML private Pane sheetPane;
+    @FXML private ToggleButton metronomeButton;
+    @FXML private ToggleButton playButton;
+    @FXML private ToggleButton recordButton;
     private final DataFormat NOTE_FORMAT = new DataFormat("note");
 
     private MusicSheet musicSheet;
     private MetronomeScheduler metronomeScheduler;
-    private Map<Integer, TimeButton> pianoKeys = new HashMap<>();
     private MelodyPlayer melodyPlayer;
+    private Map<Integer, TimeButton> pianoKeys = new HashMap<>();
+    private NotesPlayer notesPlayer;
     private Map<String, Integer> keyboardMapping = new HashMap<>();
 
     String keyboardMappingSequence = "q2w3er5t6y7uzsxdcvgbhnjm";
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,8 +68,15 @@ public class MainController implements Initializable {
         musicSheet = new MusicSheet(sheetPane);
 
         try {
-            melodyPlayer = new MelodyPlayer();
+            notesPlayer = new NotesPlayer();
         } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            melodyPlayer = new MelodyPlayer();
+            melodyPlayer.setOnEndMelodyEvent(() -> playButton.setSelected(false));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -83,6 +87,11 @@ public class MainController implements Initializable {
         }
     }
 
+    public void performClose() {
+        metronomeScheduler.close();
+        melodyPlayer.close();
+    }
+
     private void setUpNewProject() {
         recordButton.setSelected(false);
         sheetPane.getChildren().clear();
@@ -90,8 +99,8 @@ public class MainController implements Initializable {
     }
 
     private void pressPianoKey(int noteNumber) {
-        if (!melodyPlayer.isNoteOn(noteNumber)) {
-            melodyPlayer.noteOn(noteNumber);
+        if (!notesPlayer.isNoteOn(noteNumber)) {
+            notesPlayer.noteOn(noteNumber);
             TimeButton button = pianoKeys.get(noteNumber);
             button.getStyleClass().replaceAll(s -> s + "Pressed");
             button.setPressedTime(System.nanoTime());
@@ -100,8 +109,8 @@ public class MainController implements Initializable {
     }
 
     private void releasePianoKey(int noteNumber) {
-        if (melodyPlayer.isNoteOn(noteNumber)) {
-            melodyPlayer.noteOff(noteNumber);
+        if (notesPlayer.isNoteOn(noteNumber)) {
+            notesPlayer.noteOff(noteNumber);
             TimeButton button = pianoKeys.get(noteNumber);
             long duration = (System.nanoTime() - button.getPressedTime()) / 1000000; //in miliseconds
             button.getStyleClass().replaceAll(s -> s.substring(0, s.length() - "Pressed".length()));
@@ -198,10 +207,15 @@ public class MainController implements Initializable {
     public void setUpBPMHandler(KeyEvent event) {
         NumericTextField source = (NumericTextField) event.getSource();
         if (event.getCode().equals(KeyCode.ENTER)) {
-            metronomeScheduler.setBPM(Integer.parseInt(source.getText()));
+            metronomeScheduler.setBPM(source.getValue());
+            melodyPlayer.setBpm(source.getValue());
             if (metronomeButton.isSelected()) {
                 metronomeButton.setSelected(false);
                 metronomeButton.setText("Metronome Off");
+            }
+            if(playButton.isSelected()) {
+                playButton.setSelected(false);
+                melodyPlayer.stop();
             }
         }
 
@@ -224,10 +238,6 @@ public class MainController implements Initializable {
             source.setText("Metronome Off");
         }
 
-    }
-
-    public MetronomeScheduler getMetronomeScheduler() {
-        return metronomeScheduler;
     }
 
     public void recordClickedHandler(Event event) {
@@ -311,5 +321,22 @@ public class MainController implements Initializable {
                 "\n\nRelease date:\nJune of 2015\n\nhttps://bitbucket.org/quarternote/quarternote");
 
         alert.showAndWait();
+    }
+
+    public void playClickedHandler(Event event) {
+        if (((ToggleButton) event.getSource()).isSelected()) {
+            try {
+                List<NoteRest> notes = musicSheet.getMusicStaff().getNodes().stream()
+                        .filter(sheetItem -> sheetItem instanceof NoteRestNode)
+                        .map(sheetItem -> ((NoteRestNode)sheetItem).getNoteRest())
+                        .collect(Collectors.toList());
+
+                melodyPlayer.play(notes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            melodyPlayer.stop();
+        }
     }
 }
