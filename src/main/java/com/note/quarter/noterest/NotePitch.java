@@ -25,7 +25,6 @@ public class NotePitch {
     public NotePitch(int index, boolean withSharp) {
         int octave = index / TONES_IN_SCALE;
         index %= TONES_IN_SCALE;
-        System.out.println("index " + index);
         if(index <= 2) {
             midiCode = 2*index;
         }

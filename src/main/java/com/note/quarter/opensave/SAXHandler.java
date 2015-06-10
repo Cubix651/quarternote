@@ -44,7 +44,6 @@ public class SAXHandler extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName, Attributes var4) throws SAXException {
-        System.out.println(++progress+' '+qName);
         elements.push(qName);
         if (qName.equals("clef")) {
             currentClefSet = true;
@@ -53,7 +52,6 @@ public class SAXHandler extends DefaultHandler {
 
     public void endElement(String var1, String var2, String var3) throws SAXException {
         String popped = elements.pop();
-        System.out.println(popped);
         if (popped.equals("note")) {
             if (currentNotePitch != null) {
                 Note n = new Note(currentNoteRestValue, currentNotePitch);
