@@ -8,7 +8,10 @@ Simple music score editor. Created for programming classes purpose.
 
 ## Download
 
-[https://bitbucket.org/quarternote/quarternote/downloads/quarternote-1.0.jar](https://bitbucket.org/quarternote/quarternote/downloads/quarternote-1.0.jar)
+* [Jar file](https://github.com/Cubix651/quarternote/releases/download/release/quarternote-1.0.jar)
+* [Source .zip](https://github.com/Cubix651/quarternote/archive/release.zip)
+* [Source .tar.gz](https://github.com/Cubix651/quarternote/archive/release.tar.gz)
+
 
 ## Usage
 
@@ -23,5 +26,5 @@ $ java -jar quarternote-1.0.jar
 * Jakub Cisło
 
 ## Screenshots
-![quarternote-lin.png](https://bitbucket.org/repo/MRpkqj/images/1909525481-quarternote-lin.png)
-![quarternote-win.png](https://bitbucket.org/repo/MRpkqj/images/4067576-quarternote-win.png)
+![quarternote-lin](https://cloud.githubusercontent.com/assets/8983541/9982557/bface108-5fe0-11e5-8001-8accee087de5.png)
+![quarternote-win](https://cloud.githubusercontent.com/assets/8983541/9982558/c5a28c3e-5fe0-11e5-8ae3-c1d8b240c1ed.png)
